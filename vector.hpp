@@ -21,13 +21,33 @@ namespace ft {
 
 
 		// 23.2.4.1 construct/copy/destroy:
-		explicit vector(const allocator_type& alloc = allocator_type()) :  {}
-		explicit vector(size_type n, const value_type& value = value_type(),
-		const Allocator& = allocator_type());
+		
+		// empty container constructor (default constructor)
+		explicit vector(const allocator_type& alloc = allocator_type())
+			:  _array(0), _size(0), _capacity(0), _alloc(alloc) {}
+
+		// fill constructor
+		explicit vector(size_type n, const value_type& val = value_type(),
+			const allocator_type& alloc = allocator_type())
+			:  _array(0), _size(0), _capacity(0), _alloc(alloc) {
+			_array = _alloc.allocate(n);
+			_size = 0;
+			_capacity = n;
+			
+			for (size_type i = 0; i < n; ++i)
+				_alloc.construct(_array + i, val);
+		}
+
+		// range constructor
 		template <class InputIterator>
-		vector(InputIterator first, InputIterator last,
-		const Allocator& = allocator_type());
+		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type()),
+			:  _array(0), _size(0), _capacity(0), _alloc(alloc) {
+			
+		}
+
+		// copy constructor
 		vector(const vector<T,Allocator>& x);
+
 		~vector();
 		vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
 		template <class InputIterator>
