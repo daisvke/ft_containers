@@ -49,10 +49,23 @@ namespace ft {
 		vector(const vector<T,Allocator>& x);
 
 		~vector();
+
 		vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
+
 		template <class InputIterator>
-		void assign(InputIterator first, InputIterator last);
+		void assign(InputIterator first, InputIterator last,
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = nullptr) {
+			size_type	n = 0;
+
+			for (InputIterator it(first); it != last; ++i)
+				++n;
+
+			clear();
+
+		}
+
 		void assign(size_type n, const T& u);
+
 		allocator_type get_allocator() const;
 		// iterators:
 		iterator begin();
@@ -63,13 +76,31 @@ namespace ft {
 		const_reverse_iterator rbegin() const;
 		reverse_iterator rend();
 		const_reverse_iterator rend() const;
+
 		// 23.2.4.2 capacity:
-		size_type size() const;
-		size_type max_size() const;
+
+		size_type size(void) const {
+			return _size;
+		}
+
+		size_type max_size() const {
+			return _alloc.max_size();
+		}
+
 		void resize(size_type sz, T c = T());
-		size_type capacity() const;
-		bool empty() const;
-		void reserve(size_type n);
+
+		size_type capacity() const {
+			return _capacity;
+		}
+
+		bool empty() const {
+			return _size == 0;
+		}
+
+		void reserve(size_type n) {
+			if (n > 
+		}
+
 		// element access:
 		reference operator[](size_type n);
 		const_reference operator[](size_type n) const;
@@ -90,5 +121,10 @@ namespace ft {
 		iterator erase(iterator position);
 		iterator erase(iterator first, iterator last);
 		void swap(vector<T,Allocator>&);
-		void clear();
+
+		void clear(void) {
+			for (size_type i(0); i < _size; ++i)
+				_alloc.destroy(_array + i);
+			_size = 0;
+		}
 		};
