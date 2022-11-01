@@ -4,17 +4,17 @@
 #include <cstring>
 #include <deque>
 
-/*
-#if 1 //CREATE A REAL STL EXAMPLE
+
+#if 0 //CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
 	namespace ft = std;
-#else */
+#else
 //	#include "map.hpp"
 //	#include "stack.hpp"
 	#include "vector.hpp"
-//#endif
+#endif
 
 #include <stdlib.h>
 
@@ -94,7 +94,7 @@ int main(int argc, char** argv) {
 		std::cout << vector_buffer[i].idx << std::endl;
 
 	std::cout << std::endl;
-	std::cout << "vector_buffer: assign('i') x 4" << std::endl;
+	std::cout << "vector_buffer: assign value with =op x 4" << std::endl;
 	for (int i = 0; i < COUNT; i++)
 	{
 		vector_buffer[i].idx = i;
@@ -102,7 +102,8 @@ int main(int argc, char** argv) {
 	for (int i = 0; i < 4; ++i)
 		std::cout << vector_buffer[i].idx << std::endl;
 
-	std::cout << "vector_buffer: assign('char') x 4" << std::endl;
+	std::cout << std::endl;
+	std::cout << "vector_buffer: assign value with =op x 4" << std::endl;
 	for (int i = 0; i < COUNT; i++)
 	{
 		std::stringstream	res;
@@ -112,6 +113,24 @@ int main(int argc, char** argv) {
 	}
 	for (int i = 0; i < 4; ++i)
 		std::cout << vector_buffer[i].buff << std::endl;
+
+	std::cout << std::endl;
+	std::cout << "vector_buffer: begin(), end()" << std::endl;
+	Buffer	*begin = vector_buffer.begin();
+	Buffer	*end = vector_buffer.end() - 1;
+	std::cout << "begin: " << begin->idx << ", end: " << end->idx << std::endl;
+	
+/*
+	std::cout << std::endl;
+	std::cout << "vector_int: assign() '8' x 4" << std::endl;
+	vector_int.assign(4, 8);
+	for (int i = 0; i < 4; ++i)
+		std::cout << vector_int[i] << std::endl;
+*/
+
+
+
+
 
 	/*
 	for (int i = 0; i < COUNT; i++)

@@ -66,19 +66,6 @@ namespace ft {
 			return *this;
 		}
 
-		template <class InputIterator>
-		void assign(InputIterator first, InputIterator last/*,
-			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = nullptr*/) {
-			size_type	n = 0;
-			for (InputIterator it(first); it != last; ++it)
-				++n;
-
-			clear();
-			if (n > _capacity) reserve(n);
-			for (size_type i(0); i < n; ++i)
-				_alloc.construct(_array + i, *first++);
-			_size = n;
-		}
 
 		void assign(size_type n, const T& u) {
 			clear();
