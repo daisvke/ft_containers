@@ -1,16 +1,20 @@
 #include <iostream>
+#include <sstream>
 #include <string>
+#include <cstring>
 #include <deque>
+
+/*
 #if 1 //CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
 	namespace ft = std;
-#else
-//	#include <map.hpp>
-//	#include <stack.hpp>
-	#include <vector.hpp>
-#endif
+#else */
+//	#include "map.hpp"
+//	#include "stack.hpp"
+	#include "vector.hpp"
+//#endif
 
 #include <stdlib.h>
 
@@ -23,9 +27,11 @@ struct Buffer
 };
 
 
-#define COUNT (MAX_RAM / (int)sizeof(Buffer))
+//#define COUNT (MAX_RAM / (int)sizeof(Buffer))
+#define COUNT 4
 
 /*
+
 template<typename T>
 class MutantStack : public ft::stack<T>
 {
@@ -47,6 +53,7 @@ public:
 */
 
 int main(int argc, char** argv) {
+	/*
 	if (argc != 2)
 	{
 		std::cerr << "Usage: ./test seed" << std::endl;
@@ -56,24 +63,63 @@ int main(int argc, char** argv) {
 	}
 	const int seed = atoi(argv[1]);
 	srand(seed);
-
+*/
 	ft::vector<std::string> vector_str;
 	ft::vector<int> vector_int;
 //	ft::stack<int> stack_int;
 	ft::vector<Buffer> vector_buffer;
 //	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
 //	ft::map<int, int> map_int;
+	
+	std::cout << "vector_str: push_back(hello 'i') x 4" << std::endl;
+	for (int i = 0; i < 4; i++)
+	{
+		std::stringstream	res;
+		res << "hello " << i;
+		vector_str.push_back(res.str());
+	}
 
-	for (int i = 0; i < COUNT; i++)
+	for (int i = 0; i < 4; ++i)
+		std::cout << vector_str[i] << std::endl;
+
+//	std::cout << "count: " << COUNT << std::endl;
+	std::cout << std::endl;
+	std::cout << "vector_buffer: push_back(Buffer()) x 4" << std::endl;
+	for (int i = 0; i < 4; i++)
 	{
 		vector_buffer.push_back(Buffer());
 	}
 
+	for (int i = 0; i < 4; ++i)
+		std::cout << vector_buffer[i].idx << std::endl;
+
+	std::cout << std::endl;
+	std::cout << "vector_buffer: assign('i') x 4" << std::endl;
+	for (int i = 0; i < COUNT; i++)
+	{
+		vector_buffer[i].idx = i;
+	}
+	for (int i = 0; i < 4; ++i)
+		std::cout << vector_buffer[i].idx << std::endl;
+
+	std::cout << "vector_buffer: assign('char') x 4" << std::endl;
+	for (int i = 0; i < COUNT; i++)
+	{
+		std::stringstream	res;
+		res << "buffer " << i;
+		const char *str = res.str().c_str();
+		strcpy(vector_buffer[i].buff, str);
+	}
+	for (int i = 0; i < 4; ++i)
+		std::cout << vector_buffer[i].buff << std::endl;
+
+	/*
 	for (int i = 0; i < COUNT; i++)
 	{
 		const int idx = rand() % COUNT;
 		vector_buffer[idx].idx = 5;
 	}
+
 	ft::vector<Buffer>().swap(vector_buffer);
 
 	try
@@ -89,7 +135,7 @@ int main(int argc, char** argv) {
 	{
 		//NORMAL ! :P
 	}
-	/*
+
 	for (int i = 0; i < COUNT; ++i)
 	{
 		map_int.insert(ft::make_pair(rand(), rand()));

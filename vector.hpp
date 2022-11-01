@@ -1,6 +1,8 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+# include <iostream>
+
 # include <memory>
 # include <iterator>
 
@@ -158,8 +160,8 @@ namespace ft {
 
 		// 23.2.4.3 modifiers:
 		void push_back(const value_type& x) {
-		//	if (_size == _capacity)
-			//	reserve(
+			if (_size == _capacity)
+				reserve(_size + 1);
 			_alloc.construct(_array + _size, x);
 			++_size;
 		}
