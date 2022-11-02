@@ -222,19 +222,25 @@ namespace ft {
 				_alloc.construct(_array + i, _array[i + 1]);
 				_alloc.destroy(&_array[i + 1]);
 			}
-			return iterator(_array + pos);
+			return begin() + pos;
 		}
 
 		iterator erase(iterator first, iterator last)
 		{
 			size_type	n = last - first;
 
-			for (; first != end() - n; ++first)
+			while (first != end() - n)
+			{
 				*first = first[n];
-			for (; first != end(); ++first)
+				++first;
+			}
+			while (first != end())
+			{
 				_alloc.destroy(first);
-
-			return first; 
+				++first;
+			}
+			_size -= n;
+			return last - n; 
 		}
 
 		void swap(vector<T,Alloc>&);
@@ -251,7 +257,6 @@ namespace ft {
 		size_type		_capacity;
 		value_type		*_array;
 		size_type		_size;
-
 	};
 }
 

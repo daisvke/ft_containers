@@ -143,6 +143,18 @@ int main(int argc, char** argv) {
 	for (int i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
 
+	std::cout << std::endl;
+	std::cout << "vector_str: erase between pos [1-3)" << std::endl;
+	ft::vector<std::string>::iterator	begin_str = vector_str.begin() + 1;
+	ft::vector<std::string>::iterator	end_str = vector_str.begin() + 3;
+	vector_str.erase(begin_str, end_str);
+	for (int i = 0; i < vector_str.size(); ++i)
+		std::cout << vector_str[i] << std::endl;
+
+
+
+
+
 	/*
 	for (int i = 0; i < COUNT; i++)
 	{
