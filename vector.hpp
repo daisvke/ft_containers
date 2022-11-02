@@ -113,7 +113,10 @@ namespace ft {
 			return _alloc.max_size();
 		}
 
-		void resize(size_type sz, T c = T());
+		void resize(size_type sz, value_type c = value_type()) {
+			while (sz > _size) push_back(c);
+			while (sz < _size) pop_back();
+		}
 
 		size_type capacity(void) const {
 			return _capacity;
@@ -166,7 +169,7 @@ namespace ft {
 			++_size;
 		}
 
-		void pop_back(void) { _alloc.destroy(&_array[--_size]); }
+		void pop_back(void) { _alloc.destroy(&_array[--_size]); } 
 
 		iterator insert(iterator position, const value_type& x) {
 			size_type	pos = position - begin();
@@ -182,7 +185,7 @@ namespace ft {
  			for (size_type i(_size - 1 + n); i >= pos + n; --i)
 			{
 				_alloc.construct(_array + i, _array[i - 1]);
-				_alloc.destroy(&_array[i - 1]);
+				ralloc.destroy(&_array[i - 1]);
 			}
 			for (size_type j(pos); j < pos + n; ++j)
 				_alloc.construct(_array + j, x);
