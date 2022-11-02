@@ -79,7 +79,7 @@ int main(int argc, char** argv) {
 		vector_str.push_back(res.str());
 	}
 
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
 
 //	std::cout << "count: " << COUNT << std::endl;
@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
 		vector_buffer.push_back(Buffer());
 	}
 
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_buffer[i].idx << std::endl;
 
 	std::cout << std::endl;
@@ -99,7 +99,7 @@ int main(int argc, char** argv) {
 	{
 		vector_buffer[i].idx = i;
 	}
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_buffer[i].idx << std::endl;
 
 	std::cout << std::endl;
@@ -111,13 +111,13 @@ int main(int argc, char** argv) {
 		const char *str = res.str().c_str();
 		strcpy(vector_buffer[i].buff, str);
 	}
-	for (int i = 0; i < 4; ++i)
+	for (int i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_buffer[i].buff << std::endl;
 
 	std::cout << std::endl;
 	std::cout << "vector_buffer: begin(), end()" << std::endl;
-	Buffer	*begin = vector_buffer.begin();
-	Buffer	*end = vector_buffer.end() - 1;
+	ft::vector<Buffer>::iterator	begin = vector_buffer.begin();
+	ft::vector<Buffer>::iterator	end = vector_buffer.end() - 1;
 	std::cout << "begin: " << begin->idx << ", end: " << end->idx << std::endl;
 	
 /*
@@ -128,9 +128,20 @@ int main(int argc, char** argv) {
 		std::cout << vector_int[i] << std::endl;
 */
 
+	std::cout << std::endl;
+	std::cout << "vector_str: insert 'HERE' at position 2" << std::endl;
+	ft::vector<std::string>::iterator it_str = vector_str.begin() + 2;
+	vector_str.insert(it_str, 1, "HERE"); 
+	for (int i = 0; i < vector_str.size(); ++i)
+		std::cout << vector_str[i] << std::endl;
 
-
-
+	std::cout << std::endl;
+	std::cout << "vector_str: erase at position 2" << std::endl;
+	it_str = vector_str.begin() + 2;
+	it_str = vector_str.erase(it_str);
+	std::cout << "returned: " << *it_str << std::endl;
+	for (int i = 0; i < vector_str.size(); ++i)
+		std::cout << vector_str[i] << std::endl;
 
 	/*
 	for (int i = 0; i < COUNT; i++)

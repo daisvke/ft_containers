@@ -66,6 +66,19 @@ namespace ft {
 			return *this;
 		}
 
+		template <class InputIterator>
+		void assign(InputIterator first, InputIterator last/*,
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = nullptr*/) {
+			size_type	n = 0;
+			for (InputIterator it(first); it != last; ++it)
+				++n;
+
+			clear();
+			if (n > _capacity) reserve(n);
+			for (size_type i(0); i < n; ++i)
+				_alloc.construct(_array + i, *first++);
+			_size = n;
+		}
 
 		void assign(size_type n, const T& u) {
 			clear();
@@ -160,19 +173,7 @@ namespace ft {
 			insert(position, 1, x);
 			return begin() + pos;
 		}
-/*
-		void insert(iterator position, size_type n, const value_type& x) {
-			size_type	pos = position - begin();
 
-			if (_size + n) > _capacity)
-				reserve(_size + n);
- 			for (size_type i(_size - 1 + n); i >= pos + n; --i)
-				_array[i] = _array[i - 1];
-			for (size_type j(pos); j < pos + n; ++j)
-				_array[i] = x;
-			_size += n;
-		}
-*/
 		void insert(iterator position, size_type n, const value_type& x) {
 			size_type	pos = position - begin();
 
@@ -215,12 +216,13 @@ namespace ft {
 			size_type	pos = position - begin();
 			
 			_alloc.destroy(_array + pos);
+			--_size;
 			for (size_type i(pos); i < _size; ++i)
 			{
 				_alloc.construct(_array + i, _array[i + 1]);
-				_alloc.destroy(_array[i + 1]);
+				_alloc.destroy(&_array[i + 1]);
 			}
-			return _array + pos;
+			return iterator(_array + pos);
 		}
 
 		iterator erase(iterator first, iterator last)
