@@ -22,12 +22,12 @@
 #define BUFFER_SIZE 4096
 struct Buffer
 {
-	int idx;
+	size_t idx;
 	char buff[BUFFER_SIZE];
 };
 
 
-//#define COUNT (MAX_RAM / (int)sizeof(Buffer))
+//#define COUNT (MAX_RAM / (size_t)sizeof(Buffer))
 #define COUNT 4
 
 /*
@@ -61,57 +61,57 @@ int main(int argc, char** argv) {
 		std::cerr << "Count value:" << COUNT << std::endl;
 		return 1;
 	}
-	const int seed = atoi(argv[1]);
+	const size_t seed = atoi(argv[1]);
 	srand(seed);
 */
 	ft::vector<std::string> vector_str;
 	ft::vector<int> vector_int;
-//	ft::stack<int> stack_int;
+//	ft::stack<size_t> stack_size_t;
 	ft::vector<Buffer> vector_buffer;
 //	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
-//	ft::map<int, int> map_int;
+//	ft::map<size_t, size_t> map_size_t;
 	
 	std::cout << "vector_str: push_back(hello 'i') x 4" << std::endl;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		std::stringstream	res;
 		res << "hello " << i;
 		vector_str.push_back(res.str());
 	}
 
-	for (int i = 0; i < vector_str.size(); ++i)
+	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
 
 //	std::cout << "count: " << COUNT << std::endl;
 	std::cout << std::endl;
 	std::cout << "vector_buffer: push_back(Buffer()) x 4" << std::endl;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		vector_buffer.push_back(Buffer());
 	}
 
-	for (int i = 0; i < vector_str.size(); ++i)
+	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_buffer[i].idx << std::endl;
 
 	std::cout << std::endl;
 	std::cout << "vector_buffer: assign value with =op x 4" << std::endl;
-	for (int i = 0; i < COUNT; i++)
+	for (size_t i = 0; i < COUNT; i++)
 	{
 		vector_buffer[i].idx = i;
 	}
-	for (int i = 0; i < vector_str.size(); ++i)
+	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_buffer[i].idx << std::endl;
 
 	std::cout << std::endl;
 	std::cout << "vector_buffer: assign value with =op x 4" << std::endl;
-	for (int i = 0; i < COUNT; i++)
+	for (size_t i = 0; i < COUNT; i++)
 	{
 		std::stringstream	res;
 		res << "buffer " << i;
 		const char *str = res.str().c_str();
 		strcpy(vector_buffer[i].buff, str);
 	}
-	for (int i = 0; i < vector_str.size(); ++i)
+	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_buffer[i].buff << std::endl;
 
 	std::cout << std::endl;
@@ -124,7 +124,7 @@ int main(int argc, char** argv) {
 	std::cout << std::endl;
 	std::cout << "vector_int: assign() '8' x 4" << std::endl;
 	vector_int.assign(4, 8);
-	for (int i = 0; i < 4; ++i)
+	for (size_t i = 0; i < 4; ++i)
 		std::cout << vector_int[i] << std::endl;
 */
 
@@ -132,7 +132,7 @@ int main(int argc, char** argv) {
 	std::cout << "vector_str: insert 'HERE' at position 2" << std::endl;
 	ft::vector<std::string>::iterator it_str = vector_str.begin() + 2;
 	vector_str.insert(it_str, 1, "HERE"); 
-	for (int i = 0; i < vector_str.size(); ++i)
+	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
 
 	std::cout << std::endl;
@@ -140,7 +140,7 @@ int main(int argc, char** argv) {
 	it_str = vector_str.begin() + 2;
 	it_str = vector_str.erase(it_str);
 	std::cout << "returned: " << *it_str << std::endl;
-	for (int i = 0; i < vector_str.size(); ++i)
+	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
 
 	std::cout << std::endl;
@@ -148,17 +148,32 @@ int main(int argc, char** argv) {
 	ft::vector<std::string>::iterator	begin_str = vector_str.begin() + 1;
 	ft::vector<std::string>::iterator	end_str = vector_str.begin() + 3;
 	vector_str.erase(begin_str, end_str);
-	for (int i = 0; i < vector_str.size(); ++i)
+	for (size_t i = 0; i < vector_str.size(); ++i)
+		std::cout << vector_str[i] << std::endl;
+	
+	std::cout << std::endl;
+	std::cout << "ft::swap() two vectors" << std::endl;
+	ft::vector<std::string>	vect_to_swap;
+	vect_to_swap.push_back("ZERO");
+	vect_to_swap.push_back("ONE");
+	/*
+	for (size_t i = 0; i < 4; i++)
+	{
+		std::stringstream	res;
+		res << "To swap " << i;
+		vect_to_swap.push_back(res.str());
+	}
+	*/
+	ft::swap(vect_to_swap, vector_str);
+	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
 
 
 
-
-
 	/*
-	for (int i = 0; i < COUNT; i++)
+	for (size_t i = 0; i < COUNT; i++)
 	{
-		const int idx = rand() % COUNT;
+		const size_t idx = rand() % COUNT;
 		vector_buffer[idx].idx = 5;
 	}
 
@@ -166,9 +181,9 @@ int main(int argc, char** argv) {
 
 	try
 	{
-		for (int i = 0; i < COUNT; i++)
+		for (size_t i = 0; i < COUNT; i++)
 		{
-			const int idx = rand() % COUNT;
+			const size_t idx = rand() % COUNT;
 			vector_buffer.at(idx);
 			std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
 		}
@@ -178,21 +193,21 @@ int main(int argc, char** argv) {
 		//NORMAL ! :P
 	}
 
-	for (int i = 0; i < COUNT; ++i)
+	for (size_t i = 0; i < COUNT; ++i)
 	{
-		map_int.insert(ft::make_pair(rand(), rand()));
+		map_size_t.insert(ft::make_pair(rand(), rand()));
 	}
 
-	int sum = 0;
-	for (int i = 0; i < 10000; i++)
+	size_t sum = 0;
+	for (size_t i = 0; i < 10000; i++)
 	{
-		int access = rand();
-		sum += map_int[access];
+		size_t access = rand();
+		sum += map_size_t[access];
 	}
 	std::cout << "should be constant with the same seed: " << sum << std::endl;
 
 	{
-		ft::map<int, int> copy = map_int;
+		ft::map<size_t, size_t> copy = map_size_t;
 	}
 	MutantStack<char> iterable_stack;
 	for (char letter = 'a'; letter <= 'z'; letter++)

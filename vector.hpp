@@ -1,15 +1,14 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# include <iostream>
-
 # include <memory>
 # include <iterator>
+
+# include "algorithm.hpp"
 
 namespace ft {
 	
 	template <class T, class Alloc = std::allocator<T> >
-	
 	class vector {
 	
 	public:
@@ -185,7 +184,7 @@ namespace ft {
  			for (size_type i(_size - 1 + n); i >= pos + n; --i)
 			{
 				_alloc.construct(_array + i, _array[i - 1]);
-				ralloc.destroy(&_array[i - 1]);
+				_alloc.destroy(&_array[i - 1]);
 			}
 			for (size_type j(pos); j < pos + n; ++j)
 				_alloc.construct(_array + j, x);
@@ -246,7 +245,13 @@ namespace ft {
 			return last - n; 
 		}
 
-		void swap(vector<T,Alloc>&);
+		void swap(vector& x)
+		{
+			ft::swap(_alloc, x._alloc);
+			ft::swap(_capacity, x._capacity);
+			ft::swap(_array, x._array);
+			ft::swap(_size, x._size);
+		}
 
 		void clear(void) {
 			for (size_type i(0); i < _size; ++i)
@@ -261,6 +266,13 @@ namespace ft {
 		value_type		*_array;
 		size_type		_size;
 	};
+
+	// End of vector
+
+	template <class T, class Alloc>
+	void swap(vector<T,Alloc>& x, vector<T,Alloc>& y) { x.swap(y); }
 }
+
+// End of namespace ft
 
 #endif
