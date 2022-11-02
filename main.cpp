@@ -52,6 +52,13 @@ public:
 };
 */
 
+void print_testname(const char *name) {
+	static int	i;
+	++i;
+	std::cout << std::endl;
+	std::cout << "\033[4;33m" << i << "> " << name << "\033[0m" << std::endl;
+}
+
 int main(int argc, char** argv) {
 	/*
 	if (argc != 2)
@@ -71,7 +78,7 @@ int main(int argc, char** argv) {
 //	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
 //	ft::map<size_t, size_t> map_size_t;
 	
-	std::cout << "vector_str: push_back(hello 'i') x 4" << std::endl;
+	print_testname("vector_str: push_back(hello 'i') x 4");
 	for (size_t i = 0; i < 4; i++)
 	{
 		std::stringstream	res;
@@ -83,8 +90,7 @@ int main(int argc, char** argv) {
 		std::cout << vector_str[i] << std::endl;
 
 //	std::cout << "count: " << COUNT << std::endl;
-	std::cout << std::endl;
-	std::cout << "vector_buffer: push_back(Buffer()) x 4" << std::endl;
+	print_testname("vector_buffer: push_back(Buffer()) x 4");
 	for (size_t i = 0; i < 4; i++)
 	{
 		vector_buffer.push_back(Buffer());
@@ -93,8 +99,7 @@ int main(int argc, char** argv) {
 	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_buffer[i].idx << std::endl;
 
-	std::cout << std::endl;
-	std::cout << "vector_buffer: assign value with =op x 4" << std::endl;
+	print_testname("vector_buffer: assign value with =op x 4");
 	for (size_t i = 0; i < COUNT; i++)
 	{
 		vector_buffer[i].idx = i;
@@ -102,8 +107,7 @@ int main(int argc, char** argv) {
 	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_buffer[i].idx << std::endl;
 
-	std::cout << std::endl;
-	std::cout << "vector_buffer: assign value with =op x 4" << std::endl;
+	print_testname("vector_buffer: assign value with =op x 4");
 	for (size_t i = 0; i < COUNT; i++)
 	{
 		std::stringstream	res;
@@ -114,8 +118,7 @@ int main(int argc, char** argv) {
 	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_buffer[i].buff << std::endl;
 
-	std::cout << std::endl;
-	std::cout << "vector_buffer: begin(), end()" << std::endl;
+	print_testname("vector_buffer: begin(), end()");
 	ft::vector<Buffer>::iterator	begin = vector_buffer.begin();
 	ft::vector<Buffer>::iterator	end = vector_buffer.end() - 1;
 	std::cout << "begin: " << begin->idx << ", end: " << end->idx << std::endl;
@@ -128,42 +131,28 @@ int main(int argc, char** argv) {
 		std::cout << vector_int[i] << std::endl;
 */
 
-	std::cout << std::endl;
-	std::cout << "vector_str: insert 'HERE' at position 2" << std::endl;
+	print_testname( "vector_str: insert 'HERE' at position 2");
 	ft::vector<std::string>::iterator it_str = vector_str.begin() + 2;
 	vector_str.insert(it_str, 1, "HERE"); 
 	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
 
-	std::cout << std::endl;
-	std::cout << "vector_str: erase at position 2" << std::endl;
-	it_str = vector_str.begin() + 2;
-	it_str = vector_str.erase(it_str);
+	print_testname("vector_str: erase at position 2");
+	it_str = vector_str.begin() + 2; it_str = vector_str.erase(it_str);
 	std::cout << "returned: " << *it_str << std::endl;
 	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
 
-	std::cout << std::endl;
-	std::cout << "vector_str: erase between pos [1-3)" << std::endl;
+	print_testname("vector_str: erase between pos [1-3)");
 	ft::vector<std::string>::iterator	begin_str = vector_str.begin() + 1;
 	ft::vector<std::string>::iterator	end_str = vector_str.begin() + 3;
 	vector_str.erase(begin_str, end_str);
 	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
 	
-	std::cout << std::endl;
-	std::cout << "ft::swap() two vectors" << std::endl;
+	print_testname("ft::swap() two vectors");
 	ft::vector<std::string>	vect_to_swap;
-	vect_to_swap.push_back("ZERO");
-	vect_to_swap.push_back("ONE");
-	/*
-	for (size_t i = 0; i < 4; i++)
-	{
-		std::stringstream	res;
-		res << "To swap " << i;
-		vect_to_swap.push_back(res.str());
-	}
-	*/
+	vect_to_swap.push_back("ZERO"); vect_to_swap.push_back("ONE");
 	ft::swap(vect_to_swap, vector_str);
 	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
