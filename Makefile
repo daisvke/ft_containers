@@ -9,7 +9,8 @@ OBJS_FILES		=	$(SRCS:.cpp=.o)
 OBJS			=	$(addprefix $(OBJS_DIR), $(OBJS_FILES))
 INCS			=	algorithm.hpp \
 					sfinae.hpp \
-					vector.hpp
+					vector.hpp \
+					iterator.hpp
 
 .PHONY: all clean fclean re
 
