@@ -165,7 +165,7 @@ namespace ft {
 		// 23.2.4.3 modifiers:
 		void push_back(const value_type& x) {
 			if (_size == _capacity)
-				reserve(_size + 1);
+				reserve(new_cap(_size + 1));
 			_alloc.construct(_array + _size, x);
 			++_size;
 		}
@@ -182,7 +182,7 @@ namespace ft {
 			size_type	pos = position - begin();
 
 			if (_size + n > _capacity)
-				reserve(_size + n);
+				reserve(new_cap(_size + n));
  			for (size_type i(_size - 1 + n); i >= pos + n; --i)
 			{
 				_alloc.construct(_array + i, _array[i - 1]);
@@ -202,7 +202,7 @@ namespace ft {
 				++n;
 
 			if (_size + n > _capacity)
-				reserve(_size + n);
+				reserve(new_cap(_size + n));
  			for (size_type i(_size - 1 + n); i >= pos + n; --i)
 			{
 				_alloc.construct(_array + i, _array[i - 1]);
@@ -267,6 +267,16 @@ namespace ft {
 		size_type		_capacity;
 		value_type		*_array;
 		size_type		_size;
+
+		// When using assign() or insert(), vectors from STL can allocate more than needed
+		size_type		new_cap(size_type n)
+		{
+			size_type	i;
+
+			i = 1;
+			while (i < n) { i *= 2;	}
+			return i;
+		}
 	};
 
 	// End of vector

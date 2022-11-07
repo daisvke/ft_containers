@@ -79,13 +79,14 @@ int main(int argc, char** argv) {
 //	ft::map<size_t, size_t> map_size_t;
 	
 	print_testname("vector_str: push_back(hello 'i') x 4");
-	for (size_t i = 0; i < 4; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		std::stringstream	res;
 		res << "hello " << i;
 		vector_str.push_back(res.str());
 	}
 
+	std::cout << "size: " << vector_str.size() << ", cap: " << vector_str.capacity() << std::endl;
 	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
 
@@ -136,6 +137,7 @@ int main(int argc, char** argv) {
 	vector_str.insert(it_str, 1, "HERE"); 
 	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
+	std::cout << "size: " << vector_str.size() << ", cap: " << vector_str.capacity() << std::endl;
 
 	print_testname("vector_str: erase at position 2");
 	it_str = vector_str.begin() + 2; it_str = vector_str.erase(it_str);
