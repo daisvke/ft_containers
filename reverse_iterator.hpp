@@ -69,8 +69,8 @@ namespace ft {
 	bool operator>= (const reverse_iterator<Iter1>& l, const reverse_iterator<Iter2>& r) { return l.base() <= r.base(); }
 
 	template <class Iter>
-	reverse_iterator<Iter> operator+ (typename reverse_iterator<Iter>::difference_type n, const reverse_iterator<Iter>& rev_ptr) {
-		return rev_ptr + n;
+	reverse_iterator<Iter> operator+ (typename reverse_iterator<Iter>::difference_type n, const reverse_iterator<Iter>& it) {
+		return it + n;
 	}
 
 	template <class Iter1, class Iter2>
