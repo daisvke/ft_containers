@@ -10,7 +10,7 @@
 
 namespace ft {
 	
-	template <class T, class Alloc = std::allocator<T> >
+	template < class T, class Alloc = std::allocator<T> >
 	class vector {
 	
 	public:
@@ -19,7 +19,7 @@ namespace ft {
 		typedef Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_reference	const_reference;
-		typedef T*											iterator;
+		typedef ft::random_access_iterator<T>											iterator;
 		typedef const T*									const_iterator;
 		typedef std::size_t									size_type;
 		typedef std::ptrdiff_t								difference_type;
@@ -173,13 +173,13 @@ namespace ft {
 		void pop_back(void) { _alloc.destroy(&_array[--_size]); } 
 
 		iterator insert(iterator position, const value_type& x) {
-			size_type	pos = position - begin();
+			difference_type	pos = position - begin();
 			insert(position, 1, x);
 			return begin() + pos;
 		}
 
 		void insert(iterator position, size_type n, const value_type& x) {
-			size_type	pos = position - begin();
+			difference_type	pos = position - begin();
 
 			if (_size + n > _capacity)
 				reserve(new_cap(_size + n));
@@ -196,7 +196,7 @@ namespace ft {
 		template <class InputIterator>
 		void insert(iterator position, InputIterator first, InputIterator last,
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0) {
-			size_type	pos = position - begin();
+			difference_type	pos = position - begin();
 			size_type	n = 0;
 			for (InputIterator it(first); it != last; ++it)
 				++n;
@@ -217,7 +217,7 @@ namespace ft {
 		}
 
 		iterator erase(iterator position) {
-			size_type	pos = position - begin();
+			difference_type	pos = position - begin();
 			
 			_alloc.destroy(_array + pos);
 			--_size;
@@ -231,7 +231,7 @@ namespace ft {
 
 		iterator erase(iterator first, iterator last)
 		{
-			size_type	n = last - first;
+			difference_type	n = last - first;
 
 			while (first != end() - n)
 			{
@@ -240,7 +240,7 @@ namespace ft {
 			}
 			while (first != end())
 			{
-				_alloc.destroy(first);
+				_alloc.destroy(first.base());
 				++first;
 			}
 			_size -= n;
@@ -277,14 +277,37 @@ namespace ft {
 			while (i < n) { i *= 2;	}
 			return i;
 		}
-	};
+	}; // End of vector
 
-	// End of vector
+	// Relational operators
+	template <class T, class Alloc>
+	bool	operator== (const vector<T,Alloc>& l, const vector<T,Alloc>& r)
+	{
+		if (l.size() != r.size()) return false;
+		return equal(l.begin(), l.end(), r.begin());
+	}
 
 	template <class T, class Alloc>
-	void swap(vector<T,Alloc>& x, vector<T,Alloc>& y) { x.swap(y); }
-}
+	bool	operator!= (const vector<T,Alloc>& l, const vector<T,Alloc>& r) { return !(l == r); }
 
-// End of namespace ft
+	template <class T, class Alloc>
+	bool	operator< (const vector<T,Alloc>& l, const vector<T,Alloc>& r ) {
+		return lexicographical_compare(l.begin(), l.end(), r.begin(), r.end());
+	}
+
+	template <class T, class Alloc>
+	bool	operator<= (const vector<T,Alloc>& l, const vector<T,Alloc>& r ) { return !(r < l); }
+
+	template <class T, class Alloc>
+	bool	operator> (const vector<T,Alloc>& l, const vector<T,Alloc>& r )	{ return r < l; }
+
+	template <class T, class Alloc>
+	bool	operator>= (const vector<T,Alloc>& l, const vector<T,Alloc>& r )	 { return !(l < r); }
+
+	// swap
+	template <class T, class Alloc>
+	void swap(vector<T,Alloc>& x, vector<T,Alloc>& y) { x.swap(y); }
+
+} // End of namespace ft
 
 #endif
