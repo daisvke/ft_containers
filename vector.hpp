@@ -6,7 +6,8 @@
 
 # include "algorithm.hpp"
 # include "sfinae.hpp"
-# include "iterator.hpp"
+# include "random_access_iterator.hpp"
+# include "reverse_iterator.hpp"
 
 namespace ft {
 	
@@ -19,15 +20,15 @@ namespace ft {
 		typedef Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_reference	const_reference;
-		typedef ft::random_access_iterator<T>											iterator;
-		typedef const T*									const_iterator;
+		typedef ft::random_access_iterator<T>				iterator;
+		typedef ft::random_access_iterator<const T>			const_iterator;
 		typedef std::size_t									size_type;
 		typedef std::ptrdiff_t								difference_type;
 		typedef T											value_type;
 		typedef typename allocator_type::pointer			pointer;
 		typedef typename allocator_type::const_pointer		const_pointer;
-		typedef std::reverse_iterator<iterator>				reverse_iterator;
-		typedef std::reverse_iterator<const_iterator>		const_reverse_iterator;
+		typedef ft::reverse_iterator<iterator>				reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 
 		// 23.2.4.1 construct/copy/destroy:
@@ -57,11 +58,13 @@ namespace ft {
 		// copy constructor
 		vector(const vector& x): _alloc(x.alloc), _capacity(x._capacity), _array(_alloc.allocate(x._capacity)), _size(x._size) { assign(x.begin(), x.end()); }
 
+		// destructor
 		~vector() {
 			clear();
 			_alloc.deallocate(_array, _capacity);
 		}
 
+		// Assigning operator
 		vector& operator=(const vector& x) {
 			if (this != &x) assign(x.begin(), x.end());
 			return *this;

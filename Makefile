@@ -10,7 +10,9 @@ OBJS			=	$(addprefix $(OBJS_DIR), $(OBJS_FILES))
 INCS			=	algorithm.hpp \
 					sfinae.hpp \
 					vector.hpp \
-					iterator.hpp
+					iterator_traits.hpp \
+					random_access_iterator.hpp \
+					reverse_iterator.hpp
 
 .PHONY: all clean fclean re
 

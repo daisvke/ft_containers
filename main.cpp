@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
 //	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
 //	ft::map<size_t, size_t> map_size_t;
 	
-	print_testname("vector_str: push_back(hello 'i') x 4");
+	print_testname("vector_str: push_back(hello 'i') x 3");
 	for (size_t i = 0; i < 3; i++)
 	{
 		std::stringstream	res;
@@ -97,7 +97,7 @@ int main(int argc, char** argv) {
 		vector_buffer.push_back(Buffer());
 	}
 
-	for (size_t i = 0; i < vector_str.size(); ++i)
+	for (size_t i = 0; i < vector_buffer.size(); ++i)
 		std::cout << vector_buffer[i].idx << std::endl;
 
 	print_testname("vector_buffer: assign value with =op x 4");
@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
 	{
 		vector_buffer[i].idx = i;
 	}
-	for (size_t i = 0; i < vector_str.size(); ++i)
+	for (size_t i = 0; i < vector_buffer.size(); ++i)
 		std::cout << vector_buffer[i].idx << std::endl;
 
 	print_testname("vector_buffer: assign value with =op x 4");
@@ -116,13 +116,21 @@ int main(int argc, char** argv) {
 		const char *str = res.str().c_str();
 		strcpy(vector_buffer[i].buff, str);
 	}
-	for (size_t i = 0; i < vector_str.size(); ++i)
+	for (size_t i = 0; i < vector_buffer.size(); ++i)
 		std::cout << vector_buffer[i].buff << std::endl;
 
 	print_testname("vector_buffer: begin(), end()");
 	ft::vector<Buffer>::iterator	begin = vector_buffer.begin();
 	ft::vector<Buffer>::iterator	end = vector_buffer.end() - 1;
 	std::cout << "begin: " << begin->idx << ", end: " << end->idx << std::endl;
+
+	print_testname("vector_buffer: rbegin(), rend()");
+	ft::vector<Buffer>::reverse_iterator	rbegin = vector_buffer.rbegin() + 1;
+	ft::vector<Buffer>::reverse_iterator	rend = vector_buffer.rend();
+	std::cout << "rbegin: " << rbegin->idx << ", rend: " << rend->idx << std::endl;
+
+//	if (rbegin == end)
+//		std::cout << "begin and rbegin are the same" << std::endl;
 	
 /*
 	std::cout << std::endl;
@@ -161,7 +169,6 @@ int main(int argc, char** argv) {
 
 
 
-	/*
 	for (size_t i = 0; i < COUNT; i++)
 	{
 		const size_t idx = rand() % COUNT;
@@ -183,7 +190,7 @@ int main(int argc, char** argv) {
 	{
 		//NORMAL ! :P
 	}
-
+/*
 	for (size_t i = 0; i < COUNT; ++i)
 	{
 		map_size_t.insert(ft::make_pair(rand(), rand()));
