@@ -6,11 +6,13 @@
 
 
 #if 0 //CREATE A REAL STL EXAMPLE
+	#define _NAMESPACE	"STL"
 	#include <map>
 	#include <stack>
 	#include <vector>
 	namespace ft = std;
 #else
+	#define _NAMESPACE	"FT"
 //	#include "map.hpp"
 //	#include "stack.hpp"
 	#include "vector.hpp"
@@ -71,6 +73,12 @@ int main(int argc, char** argv) {
 	const size_t seed = atoi(argv[1]);
 	srand(seed);
 */
+
+	// Check which namespace will be used
+	std::cout << std::endl <<
+		">> \033[31mUSING NAMESPACE " << _NAMESPACE << "\033[0m <<"
+		<< std::endl;
+
 	ft::vector<std::string> vector_str;
 	ft::vector<int> vector_int;
 //	ft::stack<size_t> stack_size_t;

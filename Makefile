@@ -8,11 +8,10 @@ OBJS_DIR		=	objs/
 OBJS_FILES		=	$(SRCS:.cpp=.o)
 OBJS			=	$(addprefix $(OBJS_DIR), $(OBJS_FILES))
 INCS			=	algorithm.hpp \
-					sfinae.hpp \
 					vector.hpp \
-					iterator_traits.hpp \
-					random_access_iterator.hpp \
-					reverse_iterator.hpp
+					type_traits.hpp \
+					iterator.hpp \
+					utility.hpp
 
 .PHONY: all clean fclean re
 

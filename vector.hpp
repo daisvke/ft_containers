@@ -5,9 +5,9 @@
 # include <iterator>
 
 # include "algorithm.hpp"
-# include "sfinae.hpp"
-# include "random_access_iterator.hpp"
-# include "reverse_iterator.hpp"
+# include "type_traits.hpp"
+# include "iterator.hpp"
+# include "utility.hpp"
 
 namespace ft {
 	
@@ -16,7 +16,9 @@ namespace ft {
 	
 	public:
 
-		// types:
+		/*************************************************************
+		* Types
+		*************************************************************/
 		typedef Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;
 		typedef typename allocator_type::const_reference	const_reference;
@@ -31,8 +33,9 @@ namespace ft {
 		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
 
-		// 23.2.4.1 construct/copy/destroy:
-		
+		/*************************************************************
+		* construct/copy/destroy
+		*************************************************************/
 		// empty container constructor (default constructor)
 		explicit vector(const allocator_type& alloc = allocator_type())
 			: _alloc(alloc), _capacity(0), _array(0), _size(0) {}
@@ -64,7 +67,10 @@ namespace ft {
 			_alloc.deallocate(_array, _capacity);
 		}
 
-		// Assigning operator
+
+		/*************************************************************
+		* Assigning operator
+		*************************************************************/
 		vector& operator=(const vector& x) {
 			if (this != &x) assign(x.begin(), x.end());
 			return *this;
@@ -94,7 +100,10 @@ namespace ft {
 
 		allocator_type get_allocator() const { return _alloc; }
 
-		// iterators:
+
+		/*************************************************************
+		* Iterators
+		*************************************************************/
 		iterator begin(void) { return iterator(_array); }
 		const_iterator begin(void) const { return const_iterator(_array); }
 
@@ -108,7 +117,9 @@ namespace ft {
 		const_reverse_iterator rend(void) const { return const_reverse_iterator(begin()); }
 
 
-		// 23.2.4.2 capacity:
+		/*************************************************************
+		* Capacity
+		*************************************************************/
 		size_type size(void) const {
 			return _size;
 		}
@@ -146,7 +157,9 @@ namespace ft {
 			}
 		}
 
-		// element access:
+		/*************************************************************
+		* Operator overloads
+		*************************************************************/
 		reference operator[](size_type n) { return _array[n]; }
 		const_reference operator[](size_type n) const { return _array[n]; }
 
@@ -165,7 +178,9 @@ namespace ft {
 		reference back(void) { return _array[_size - 1]; }
 		const_reference back(void) const { return _array[_size - 1]; }
 
-		// 23.2.4.3 modifiers:
+		/*************************************************************
+		* Modifiers
+		*************************************************************/
 		void push_back(const value_type& x) {
 			if (_size == _capacity)
 				reserve(new_cap(_size + 1));
@@ -264,6 +279,7 @@ namespace ft {
 			_size = 0;
 		}
 
+
 	private:
 
 		allocator_type	_alloc;
@@ -282,7 +298,10 @@ namespace ft {
 		}
 	}; // End of vector
 
-	// Relational operators
+
+	/*************************************************************
+	* Relational operators
+	*************************************************************/
 	template <class T, class Alloc>
 	bool	operator== (const vector<T,Alloc>& l, const vector<T,Alloc>& r)
 	{
