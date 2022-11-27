@@ -56,7 +56,7 @@ namespace ft {
 		}
 
 		// copy constructor
-		vector(const vector& x): _alloc(x.alloc), _capacity(x._capacity), _array(_alloc.allocate(x._capacity)), _size(x._size) { assign(x.begin(), x.end()); }
+		vector(const vector& x): _alloc(x._alloc), _capacity(x._capacity), _array(_alloc.allocate(x._capacity)), _size(x._size) { assign(x.begin(), x.end()); }
 
 		// destructor
 		~vector() {
@@ -287,7 +287,7 @@ namespace ft {
 	bool	operator== (const vector<T,Alloc>& l, const vector<T,Alloc>& r)
 	{
 		if (l.size() != r.size()) return false;
-		return equal(l.begin(), l.end(), r.begin());
+		return ft::equal(l.begin(), l.end(), r.begin());
 	}
 
 	template <class T, class Alloc>
@@ -295,7 +295,7 @@ namespace ft {
 
 	template <class T, class Alloc>
 	bool	operator< (const vector<T,Alloc>& l, const vector<T,Alloc>& r ) {
-		return lexicographical_compare(l.begin(), l.end(), r.begin(), r.end());
+		return ft::lexicographical_compare(l.begin(), l.end(), r.begin(), r.end());
 	}
 
 	template <class T, class Alloc>

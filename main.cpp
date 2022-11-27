@@ -190,6 +190,31 @@ int main(int argc, char** argv) {
 	{
 		//NORMAL ! :P
 	}
+
+	std::cout << std::endl;
+
+	print_testname( "vector_int:	v1: {1, 2, 3}	v2 = v1. Comparing the two using '=='");
+
+	ft::vector<int>	v1;
+	v1.push_back(1);
+	v1.push_back(2);
+	v1.push_back(3);
+	ft::vector<int>	v2 = v1;
+	if (v1 == v2) {
+		std::cout << "v1 equals v2" << std::endl;
+
+		print_testname( "vector_int:	v1: {2, 2, 3}	v2 = {1, 2, 3}. Comparing the two using '>'");
+		v1[0] = 2;
+		if (v1 > v2) {
+			std::cout << "v1 is bigger than v2" << std::endl;
+
+			print_testname( "vector_int:	v1: {-1, 2, 3}	v2 = {1, 2, 3}. Comparing the two using '<'");
+			v1[0] = -1;
+			if (v1 < v2)
+				std::cout << "v1 is smaller than v2" << std::endl;
+		}
+	}
+
 /*
 	for (size_t i = 0; i < COUNT; ++i)
 	{
@@ -215,6 +240,8 @@ int main(int argc, char** argv) {
 		std::cout << *it;
 	}
 	*/
+
 	std::cout << std::endl;
+
 	return (0);
 }
