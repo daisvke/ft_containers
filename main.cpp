@@ -13,7 +13,7 @@
 	namespace ft = std;
 #else
 	#define _NAMESPACE	"FT"
-//	#include "map.hpp"
+	#include "map.hpp"
 //	#include "stack.hpp"
 	#include "vector.hpp"
 #endif

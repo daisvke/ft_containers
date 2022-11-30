@@ -51,6 +51,7 @@ namespace ft {
 	class	random_access_iterator {
 
 	public:
+
 		typedef std::ptrdiff_t		difference_type;
 		typedef T					value_type;
 		typedef value_type*			pointer;
@@ -61,7 +62,7 @@ namespace ft {
 
 		random_access_iterator() : _ptr() {}
 		random_access_iterator(pointer it) : _ptr(it) {}
-		random_access_iterator(const random_access_iterator& it) : _ptr(it.base()) {}
+		random_access_iterator(const random_access_iterator &it) : _ptr(it.base()) {}
 		~random_access_iterator() {}
 
 		// Getter
@@ -113,7 +114,9 @@ namespace ft {
 		bool operator>= (random_access_iterator const& r) const { return (_ptr >= r._ptr); }
 		bool operator<= (random_access_iterator const& r) const { return (_ptr <= r._ptr); }
 
+
 	private:
+
 		pointer	_ptr;
 	};
 
@@ -126,6 +129,7 @@ namespace ft {
 	{
 
 	public:
+
 		typedef iterator iterator_type;
 		typedef typename iterator_traits<iterator>::difference_type		difference_type;
 		typedef typename iterator_traits<iterator>::value_type			value_type;
@@ -162,6 +166,7 @@ namespace ft {
 
 
 	private:
+
 		iterator _ptr;
 
 	}; // End reverse_iterator class

@@ -29,7 +29,8 @@ INC_FILES		=	algorithm.hpp \
 					vector.hpp \
 					type_traits.hpp \
 					iterator.hpp \
-					utility.hpp
+					utility.hpp \
+					map.hpp
 INCS			=	$(addprefix $(INC_DIR), $(INC_FILES))
 
 
