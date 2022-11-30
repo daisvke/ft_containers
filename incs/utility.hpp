@@ -16,17 +16,17 @@ namespace ft
 		second_type	second;
 
 		pair() : first(), second() {}
-		pair(const first_type &a, second_type &b) : first(a), second(b) {}
+		pair(const first_type &a, const second_type &b) : first(a), second(b) {}
 
 		template<class U1, class U2>
-		pair(const pair<U1, U2> &p) : first(p.first, second(p.second) {}
+		pair(const pair<U1, U2> &p) : first(p.first), second(p.second) {}
 
-		pair	&operator=(const pair &obj) : first(obj.first), second(obj.second) {
+		pair	&operator=(const pair &obj) {
+			first = obj.first;
+			second = obj.second;
 			return *this;
 		}
-
-		return *this;
-	}
+	};
 
 	/*************************************************************
 	* MAKE_PAIR 
