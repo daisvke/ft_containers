@@ -5,8 +5,11 @@
 
 namespace ft {
 
-	enum	color { _RED, _BLACK };
+	enum	rbTreeColor { _RED, _BLACK };
 
+	/*************************************************************
+	* rb tree
+	*************************************************************/
 	template <class T, class Compare = std::less<Key>, class Alloc = std::allocator<T> >
 	class	rbTree
 	{
@@ -20,7 +23,7 @@ namespace ft {
 				typedef ft::pair<const key, T>	value_type;
 
 				node		*_parent, *_left, *_right;
-				int			_color;
+				rbTreeColor	_color;
 				value_type	_data;
 
 				node()	: data(), parent(), left(), right(), color(_BLACK)
