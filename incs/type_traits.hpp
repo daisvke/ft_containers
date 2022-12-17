@@ -19,7 +19,7 @@ namespace ft {
 	* It is the base class for the C++ type traits.
 	* Accepts static constant of type T with value v.
 	*************************************************************/
-	template<class T, T v>
+	template <class T, T v>
 	struct integral_constant {
 		static const T	value = v;
 		typedef T value_type;

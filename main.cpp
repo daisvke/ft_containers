@@ -15,7 +15,7 @@
 	#define _NAMESPACE	"FT"
 //	#include "stack.hpp"
 	#include "vector.hpp"
-	#include "map.hpp"
+//	#include "map.hpp"
 #endif
 
 #include <stdlib.h>
@@ -79,8 +79,8 @@ int main(int argc, char** argv) {
 		">> \033[31mUSING NAMESPACE " << _NAMESPACE << "\033[0m <<"
 		<< std::endl;
 
-	ft::vector<std::string> vector_str;
-	ft::vector<int> vector_int;
+	ft::vector<const std::string> vector_str;
+	ft::vector<const int> vector_int;
 //	ft::stack<size_t> stack_size_t;
 	ft::vector<Buffer> vector_buffer;
 //	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
