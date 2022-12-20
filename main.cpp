@@ -79,8 +79,8 @@ int main(int argc, char** argv) {
 		">> \033[31mUSING NAMESPACE " << _NAMESPACE << "\033[0m <<"
 		<< std::endl;
 
-	ft::vector<const std::string> vector_str;
-	ft::vector<const int> vector_int;
+	ft::vector<std::string> vector_str;
+	ft::vector<int> vector_int;
 //	ft::stack<size_t> stack_size_t;
 	ft::vector<Buffer> vector_buffer;
 //	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
@@ -170,7 +170,8 @@ int main(int argc, char** argv) {
 	
 	print_testname("ft::swap() two vectors");
 	ft::vector<std::string>	vect_to_swap;
-	vect_to_swap.push_back("ZERO"); vect_to_swap.push_back("ONE");
+	const std::string	s1 = "ZERO";
+	vect_to_swap.push_back(s1); vect_to_swap.push_back("ONE");
 	ft::swap(vect_to_swap, vector_str);
 	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;

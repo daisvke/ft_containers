@@ -17,7 +17,7 @@ namespace ft {
 	public:
 
 		/*************************************************************
-		* Types
+		 * Types
 		*************************************************************/
 		typedef Alloc										allocator_type;
 		typedef typename allocator_type::reference			reference;
@@ -34,7 +34,7 @@ namespace ft {
 
 
 		/*************************************************************
-		* construct/copy/destroy
+		 * construct/copy/destroy
 		*************************************************************/
 		// empty container constructor (default constructor)
 		explicit vector(const allocator_type& alloc = allocator_type())
@@ -69,7 +69,7 @@ namespace ft {
 
 
 		/*************************************************************
-		* Assigning operator
+		 * Assigning operator
 		*************************************************************/
 		vector& operator=(const vector& x) {
 			if (this != &x) assign(x.begin(), x.end());
@@ -102,7 +102,7 @@ namespace ft {
 
 
 		/*************************************************************
-		* Iterators
+		 * Iterators
 		*************************************************************/
 		iterator begin(void) { return iterator(_array); }
 		const_iterator begin(void) const { return const_iterator(_array); }
@@ -118,7 +118,7 @@ namespace ft {
 
 
 		/*************************************************************
-		* Capacity
+		 * Capacity
 		*************************************************************/
 		size_type size(void) const {
 			return _size;
@@ -158,7 +158,7 @@ namespace ft {
 		}
 
 		/*************************************************************
-		* Operator overloads
+		 * Operator overloads
 		*************************************************************/
 		reference operator[](size_type n) { return _array[n]; }
 		const_reference operator[](size_type n) const { return _array[n]; }
@@ -179,7 +179,7 @@ namespace ft {
 		const_reference back(void) const { return _array[_size - 1]; }
 
 		/*************************************************************
-		* Modifiers
+		 * Modifiers
 		*************************************************************/
 		void push_back(const value_type& x) {
 			if (_size == _capacity)
@@ -300,7 +300,7 @@ namespace ft {
 
 
 	/*************************************************************
-	* Relational operators
+	 *  Relational operators
 	*************************************************************/
 	template <class T, class Alloc>
 	bool	operator== (const vector<T,Alloc>& l, const vector<T,Alloc>& r)

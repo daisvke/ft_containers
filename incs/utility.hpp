@@ -4,7 +4,7 @@
 namespace ft
 {
 	/*************************************************************
-	* PAIR 
+	 * PAIR 
 	*************************************************************/
 	template<class T1, class T2>
 	struct pair
@@ -29,7 +29,7 @@ namespace ft
 	};
 
 	/*************************************************************
-	* MAKE_PAIR 
+	 * MAKE_PAIR 
 	*************************************************************/
 	template <class T1, class T2>
 	pair<T1, T2> make_pair(const T1 t, const T2 u) { return pair<T1, T2>(t, u); }

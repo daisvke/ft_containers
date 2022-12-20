@@ -3,52 +3,58 @@
 
 # include "utility.hpp"
 
+/*************************************************************
+ * A Red-Black Tree implementation.
+
+ * This is used in Map and Set classes
+*************************************************************/
+
 namespace ft {
 
 	enum	rbTreeColor { _RED, _BLACK };
-			
+		
+
 	/*************************************************************
-	* rb tree
+	|* node
 	*************************************************************/
-	template < class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator< ft::pair<const Key, T> > >
-	class	rbTree
+	template < class Key, class T>
+	typedef struct rbNode	s_rbNode
 	{
-	public:
+		typedef ft::pair<const Key, T>	value_type;
 
-		/*************************************************************
-		* node
-		*************************************************************/
-		struct	node
+		rbNode		*parent, *left, *right;
+		rbTreeColor	color;
+		value_type	data;
+
+		rbNode() : data(), parent(), left(), right(), color(BLACK) {}
+
+		rbNode(value_type &data, rbNode *parent)
+				: data(data), parent(parent), left(), right(), color(BLACK) {}
+
+		rbNode	&operator=(const rbNode &obj)
 		{
-			typedef ft::pair<const Key, T>	valuetype;
+			data = obj.data;
+			parent = obj.parent; left = obj.left; right = obj.right;
+			color = obj.color;
+			return *this;
+		}
 
-			node		*parent, *left, *right;
-			rbTreeColor	color;
-			valuetype	data;
-
-			node()	: data(), parent(), left(), right(), color(BLACK) {}
-
-			node(const valuetype &data, node *parent)
-					: data(data), parent(parent), left(), right(), color(BLACK) {}
-
-			node	&operator=(const node &obj)
-			{
-				data = obj.data;
-				parent = obj.parent; left = obj.left; right = obj.right;
-				color = obj.color;
-				return *this;
-			}
-
-			const Key	&getKey(void) { return _data.first; }
-			T			&getValue(void) { return _data.second; }
-		};
+		const Key	&key(void) { return data.first; }
+		T			&value(void) { return data.second; }
+	}	rbNode;
 
 
-		/*************************************************************
-		* iterator
-		*************************************************************/
-		class	iterator
-		{
+	/*************************************************************
+	|* iterator
+	*************************************************************/
+	template < class Key, class T, class Compare = std::less<Key> >
+	class	rbIterator
+	{
+		private:
+
+			node	*_node;
+
+
 		public:
 			
 			// Types
@@ -58,7 +64,7 @@ namespace ft {
 			typedef const value_type*				const_pointer;
 			typedef value_type&						reference;
 			typedef const value_type&				const_reference;
-			typedef std::bidirectional_iterator_tag	iterator_category;
+		//	typedef std::bidirectional_iterator_tag	iterator_category;
 
 			iterator() : _node() {}
 			iterator(const node *node) : _node(node) {}
@@ -75,87 +81,46 @@ namespace ft {
 			reference	operator*(void) const { return _node->data; }
 			pointer		operator->(void) const { return &_node->value; }
 
+			// Go as far left from the node as possible = find the min node in subtree
+			void leftmost(void) { while (_node->left) _node = _node->left; }
+
+			// Go as far right from the node as possible = find the max node in subtree
+			void leftmost(void) { while (_node->left) _node = _node->left; }
 			// Incrementing operators
+
+			// Get the next node in key value order
 			iterator&	operator++(void) {
-				if (_node->right != _node->right->left)
+				// If there is a right subtree, go to its leftmost (=minimal) node
+				if (_node->right)
 				{
 					_node = _node->right;
-					while (_node->left != _node->left->left)
-						_node = _node->left;
+					leftmost();
 				}
 				else
 				{
-					while (_node == _node->parent->right && _node != _node->parent)
+					// Otherwise go up the tree, looking for a node
+					//  that is its parent's left child.
+					while (_node->parent && _node != parent->left)
 						_node = _node->parent;
 					_node = _node->parent;
 				}	
 				return *this;
 			}
-			iterator	operator++(int) {
+	/*		iterator	operator++(int) {
 				iterator	tmp(*this);
 				++(*this);
 				return tmp;
 			}
+	*/
 			iterator&	operator--(void) { --_node; return *this; }
+	/*
 			iterator	operator--(int) {
 				iterator	tmp(*this);
 				--(*this);
 				return tmp;
 			}
-			// Go as far left from this node as possible.
-			// i.e. find the minimum node in this subtree
-			Node* leftmost(Node* node)
-			{
-			    if (node == 0)
-				return 0;
-			    while (node->left != 0)
-				node = node->left;
-			    return node;
-			}
+	*/
 
-			// Return the next node in key value order.
-			iterator	nextNode() {
-
-		    // If there is a right subtree, iterate over it,
-		    // starting at its leftmost (=minimal) node
-
-		    if (node->right != 0)
-			return Leftmost(node->right);
-		    
-		    // Otherwise we must go up the tree
-
-		    node *parent = node->parent;
-		    if (parent == 0)
-			return 0;
-
-		    // If we came from the left subtree of a parent node, go back to parent
-
-		    if (node == parent->left)
-			return parent;
-
-		    // So, we must be in the right subtree of the parent.
-		    // In which case we need to go up again, looking for a node that is
-		    // its parent's left child.
-
-		    while (parent != 0 && node != parent->left)
-		    {
-			node = parent;
-			parent = node->parent;
-		    }
-		    return parent;
-}
-			}
-
-
-		private:
-
-			node	*_node;
-		};
-
-
-	private:
-
-		node	*root;
 	};
 
 };

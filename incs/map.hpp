@@ -1,18 +1,24 @@
 #ifndef MAP_HPP
 # define MAP_HPP
 
-# include "rbTree.hpp"
+# include <functional>
+# include <memory>
+
+# include "utility.hpp"
 
 namespace ft {
 
+	enum	rbTreeColor { _RED, _BLACK };
+				
 	template <class Key, class T, class Compare = std::less<Key>,
-		class Alloc = std::allocator<ft::pair<const Key, T> > >
+		class Alloc = std::allocator< ft::pair<const Key, T> > >
 	class map {
 
 	public:
 
+
 	/*************************************************************
-	* Types
+	 * Types
 	*************************************************************/
 	typedef Key											key_type;
 	typedef T											mapped_type;
@@ -44,7 +50,7 @@ namespace ft {
 	};
 
 	/*************************************************************
-	* construct/copy/destroy:
+	 * construct/copy/destroy:
 	*************************************************************/
 	explicit map(const Compare& comp = Compare(),
 	const Allocator& = Allocator());
@@ -127,5 +133,6 @@ namespace ft {
 	map<Key,T,Compare,Allocator>& y);
 
 }
+
 
 #endif
