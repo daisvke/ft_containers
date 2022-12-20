@@ -102,6 +102,49 @@ namespace ft {
 				--(*this);
 				return tmp;
 			}
+			// Go as far left from this node as possible.
+			// i.e. find the minimum node in this subtree
+			Node* leftmost(Node* node)
+			{
+			    if (node == 0)
+				return 0;
+			    while (node->left != 0)
+				node = node->left;
+			    return node;
+			}
+
+			// Return the next node in key value order.
+			iterator	nextNode() {
+
+		    // If there is a right subtree, iterate over it,
+		    // starting at its leftmost (=minimal) node
+
+		    if (node->right != 0)
+			return Leftmost(node->right);
+		    
+		    // Otherwise we must go up the tree
+
+		    node *parent = node->parent;
+		    if (parent == 0)
+			return 0;
+
+		    // If we came from the left subtree of a parent node, go back to parent
+
+		    if (node == parent->left)
+			return parent;
+
+		    // So, we must be in the right subtree of the parent.
+		    // In which case we need to go up again, looking for a node that is
+		    // its parent's left child.
+
+		    while (parent != 0 && node != parent->left)
+		    {
+			node = parent;
+			parent = node->parent;
+		    }
+		    return parent;
+}
+			}
 
 
 		private:
