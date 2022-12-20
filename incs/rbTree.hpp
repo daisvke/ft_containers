@@ -57,7 +57,9 @@ namespace ft {
 
 		public:
 			
-			// Types
+			/*************************************************************
+			 * Types
+			*************************************************************/
 			typedef std::ptrdiff_t					difference_type;
 			typedef ft::pair<const Key, T>			value_type;
 			typedef value_type*						pointer;
@@ -65,37 +67,48 @@ namespace ft {
 			typedef value_type&						reference;
 			typedef const value_type&				const_reference;
 		//	typedef std::bidirectional_iterator_tag	iterator_category;
+			
 
+			/*************************************************************
+			 * Construct/Copy/Destroy
+			*************************************************************/
 			iterator() : _node() {}
 			iterator(const node *node) : _node(node) {}
 			iterator(const iterator &it) : _node(it.base()) {}
 			~iterator() {}
 
-			// Getter
+
+			/*************************************************************
+			 * Getters
+			*************************************************************/
 			pointer	base(void) const { return _node; }
-
-			// Assigning operator
-			iterator& 	operator=(const iterator& x) { _node = x.base(void); return  *this; }
-
-			// Accessing operators
-			reference	operator*(void) const { return _node->data; }
-			pointer		operator->(void) const { return &_node->value; }
 
 			// Go as far left from the node as possible = find the min node in subtree
 			void leftmost(void) { while (_node->left) _node = _node->left; }
-
 			// Go as far right from the node as possible = find the max node in subtree
-			void leftmost(void) { while (_node->left) _node = _node->left; }
-			// Incrementing operators
+			void rightmost(void) { while (_node->right) _node = _node->right; }
 
+
+			/*************************************************************
+			 * Assigning operator
+			*************************************************************/
+			iterator& 	operator=(const iterator& x) { _node = x.base(void); return  *this; }
+
+
+			/*************************************************************
+			 * Accessing operators
+			*************************************************************/
+			reference	operator*(void) const { return _node->data; }
+			pointer		operator->(void) const { return &_node->value; }
+
+
+			/*************************************************************
+			 * Incrementing operators
+			*************************************************************/
 			// Get the next node in key value order
 			iterator&	operator++(void) {
 				// If there is a right subtree, go to its leftmost (=minimal) node
-				if (_node->right)
-				{
-					_node = _node->right;
-					leftmost();
-				}
+				if (_node->right) { _node = _node->right; leftmost(); }
 				else
 				{
 					// Otherwise go up the tree, looking for a node
@@ -112,7 +125,20 @@ namespace ft {
 				return tmp;
 			}
 	*/
-			iterator&	operator--(void) { --_node; return *this; }
+			// Get the previous node in key value order
+			iterator&	operator--(void) {
+				// If there is a left subtree, go to its rightmost (=maximal) node
+				if (_node->left) { _node = _node->left; rightmost(); }
+				else
+				{
+					// Otherwise go up the tree, looking for a node
+					//  that is its parent's right child.
+					while (_node->parent && _node != parent->right)
+						_node = _node->parent;
+					_node = _node->parent;
+				}	
+				return *this;
+			}
 	/*
 			iterator	operator--(int) {
 				iterator	tmp(*this);

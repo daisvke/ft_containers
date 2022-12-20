@@ -34,7 +34,7 @@ namespace ft {
 
 
 		/*************************************************************
-		 * construct/copy/destroy
+		 * Construct/Copy/Destroy
 		*************************************************************/
 		// empty container constructor (default constructor)
 		explicit vector(const allocator_type& alloc = allocator_type())
