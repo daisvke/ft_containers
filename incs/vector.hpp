@@ -32,7 +32,6 @@ namespace ft {
 		typedef ft::reverse_iterator<iterator>				reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
 
-
 		/*************************************************************
 		 * Construct/Copy/Destroy
 		*************************************************************/
@@ -67,7 +66,6 @@ namespace ft {
 			_alloc.deallocate(_array, _capacity);
 		}
 
-
 		/*************************************************************
 		 * Assigning operator
 		*************************************************************/
@@ -100,7 +98,6 @@ namespace ft {
 
 		allocator_type get_allocator() const { return _alloc; }
 
-
 		/*************************************************************
 		 * Iterators
 		*************************************************************/
@@ -115,7 +112,6 @@ namespace ft {
 
 		reverse_iterator rend(void) { return reverse_iterator(begin()); }
 		const_reverse_iterator rend(void) const { return const_reverse_iterator(begin()); }
-
 
 		/*************************************************************
 		 * Capacity

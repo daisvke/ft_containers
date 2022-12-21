@@ -12,6 +12,7 @@ namespace ft {
 	template <class T>
 	struct enable_if<true, T> { typedef T type; };
 
+
 	/*************************************************************
 	 * integral_constant
 	
@@ -29,6 +30,7 @@ namespace ft {
 
 	typedef integral_constant<bool, true>	true_type;
 	typedef integral_constant<bool, false>	false_type;
+	
 
 	/*************************************************************
 	 * is_integral

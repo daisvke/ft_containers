@@ -28,20 +28,12 @@ namespace ft
 		}
 	};
 
+
 	/*************************************************************
 	 * MAKE_PAIR 
 	*************************************************************/
 	template <class T1, class T2>
 	pair<T1, T2> make_pair(const T1 t, const T2 u) { return pair<T1, T2>(t, u); }
-
-/*
-	// swap
-	template< class T1, class T2 >
-	void swap(pair<T1,T2> &x, pair<T1,T2> &y) {
-		pair<T1,T2>	tmp = x;
-		x = y; y = tmp;
-	}
-*/
 
     template <class T1, class T2>
     bool operator==(const pair<T1,T2> & l, const pair<T1,T2> & r)

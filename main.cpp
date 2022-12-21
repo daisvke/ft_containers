@@ -15,7 +15,7 @@
 	#define _NAMESPACE	"FT"
 //	#include "stack.hpp"
 	#include "vector.hpp"
-//	#include "map.hpp"
+	#include "map.hpp"
 #endif
 
 #include <stdlib.h>

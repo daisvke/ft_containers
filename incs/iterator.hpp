@@ -43,6 +43,7 @@ namespace ft {
 		typedef const T&								reference;
 		typedef std::random_access_iterator_tag			iterator_category;
 	};
+	
 
 	/*************************************************************
 	 * random_access_iterator
