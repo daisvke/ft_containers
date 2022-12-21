@@ -1,6 +1,9 @@
 # Compiled file
 ft_containers
 
+# VS Code file
+*.json
+
 # Temp files
 .*.sw?
 

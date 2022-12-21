@@ -14,7 +14,6 @@ namespace ft {
 
 	public:
 
-
 		/*************************************************************
 		 * Types
 		*************************************************************/
@@ -36,8 +35,10 @@ namespace ft {
 		typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 
 
-
-		// in C++98, it is required to inherit binary_function<value_type,value_type,bool>
+		/*************************************************************
+		 * value_compare
+		 * In C++98, it is required to inherit binary_function<value_type,value_type,bool>
+		*************************************************************/
 		class value_compare : public std::binary_function<value_type, value_type, bool> {   
 			friend class map;
 
@@ -78,15 +79,15 @@ namespace ft {
 		/*************************************************************
 		 * Iterators
 		*************************************************************/
-		iterator				begin() { return iterator(iterator(_root).leftmost()); }
-		const_iterator			begin() const { return const_iterator(const_iterator(_root).leftmost()); }
-		iterator				end() { ; }
+		iterator				begin(void) { return iterator(iterator(_root).leftmost()); }
+		const_iterator			begin(void) const { return const_iterator(const_iterator(_root).leftmost()); }
+		iterator				end(void) { return past_the_end(); }
+		const_iterator			end(void) const { return const_iterator(past_the_end()); }
 
-		const_iterator end() const;
-		reverse_iterator rbegin();
-		const_reverse_iterator rbegin() const;
-		reverse_iterator rend();
-		const_reverse_iterator rend() const;
+		reverse_iterator		rbegin(void) { return reverse_iterator(--end()); }
+		const_reverse_iterator	rbegin(void) const { return const_reverse_iterator(-end()); }
+		reverse_iterator		rend(void);
+		const_reverse_iterator	rend(void) const;
 
 		/*************************************************************
 		 * Capacity
