@@ -1,5 +1,5 @@
-#ifndef ALGORITHM_HPP
-# define ALGORITHM_HPP
+#ifndef _FT_ALGORITHM_HPP
+# define _FT_ALGORITHM_HPP
 
 namespace ft {
 
@@ -49,4 +49,4 @@ namespace ft {
 
 }
 
-#endif
+#endif /* _FT_ALGORITHM_HPP */

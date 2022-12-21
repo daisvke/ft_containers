@@ -1,5 +1,5 @@
-#ifndef ITERATOR_HPP
-# define ITERATOR_HPP
+#ifndef _FT_ITERATOR_HPP
+# define _FT_ITERATOR_HPP
 
 # include <iterator>
 
@@ -107,7 +107,7 @@ namespace ft {
 		random_access_iterator& operator+=(const difference_type &n) { _ptr += n; return *this; }
 		random_access_iterator& operator-=(const difference_type &n) { *this += -n; return *this; }
 
-		 // Boolean operators
+		// Boolean operators
 		bool operator==(random_access_iterator const& r) const { return (_ptr == r._ptr); }
 		bool operator!=(random_access_iterator const& r) const { return (_ptr != r._ptr); }
 		bool operator>(random_access_iterator const& r) const { return (_ptr > r._ptr); }
@@ -200,4 +200,4 @@ namespace ft {
 
 }
 
-#endif
+#endif /* _FT_ITERATOR_HPP */

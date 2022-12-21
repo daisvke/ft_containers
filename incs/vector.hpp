@@ -62,7 +62,7 @@ namespace ft {
 		}
 
 		// Range constructor
-		// Create a vector consisting of copies of the elements from [first,last).
+		// Create a vector consisting of copies of the elements from [first,last)
 		//	with logN memory reallocations.
 		template <class InputIterator>
 		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
