@@ -36,15 +36,21 @@ namespace ft {
 		typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 
 
-		class value_compare : public binary_function<value_type, value_type, bool> {
-			friend class	map;
+
+		// in C++98, it is required to inherit binary_function<value_type,value_type,bool>
+		class value_compare : public std::binary_function<value_type, value_type, bool> {   
+			friend class map;
 
 			protected:
-				key_compare	comp;
-				value_compare(key_compare c) : comp(c) {}accessin
+				Compare comp;
+				value_compare (Compare c) : comp(c) {} // constructed with map's comparison object
 
 			public:
-				bool operator()(const value_type& x, const value_type& y) const
+				typedef bool result_type;
+				typedef value_type first_argument_type;
+				typedef value_type second_argument_type;
+
+				bool operator() (const value_type& x, const value_type& y) const
 				{ return comp(x.first, y.first); }
 		};
 
