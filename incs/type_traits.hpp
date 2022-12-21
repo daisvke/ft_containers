@@ -1,15 +1,18 @@
-#ifndef TYPE_TRAITS_HPP
-# define TYPE_TRAITS_HPP
+#ifndef _FT_TYPE_TRAITS_HPP
+# define _FT_TYPE_TRAITS_HPP
 
 namespace ft {
 
 	/*************************************************************
 	 * enable_if
 	*************************************************************/
-	template <bool B, class T = void>
+	// Primary template
+	// Define a member typedef `type` only if a boolean constant is true
+	template <bool B, typename T = void>
 	struct enable_if {};
 	 
-	template <class T>
+	// Partial specialization for true
+	template <typename T>
 	struct enable_if<true, T> { typedef T type; };
 
 
@@ -20,15 +23,17 @@ namespace ft {
 	 * It is the base class for the C++ type traits.
 	 * Accepts static constant of type T with value v.
 	*************************************************************/
-	template <class T, T v>
+	template <typename T, T v>
 	struct integral_constant {
-		static const T	value = v;
-		typedef T value_type;
+		static const T					value = v;
+		typedef T 						value_type;
 		typedef integral_constant<T, v> type;
 		operator value_type() { return value; }
 	};
 
+	// The type used as a compile-time boolean with true value
 	typedef integral_constant<bool, true>	true_type;
+	// The type used as a compile-time boolean with false value
 	typedef integral_constant<bool, false>	false_type;
 	
 
@@ -58,6 +63,6 @@ namespace ft {
 	template <> struct is_integral<long>			: public ft::true_type {};
 	template <> struct is_integral<unsigned long>	: public ft::true_type {};
 	template <> struct is_integral<long long>		: public ft::true_type {};
-}
+} // namespace ft
 
-#endif
+#endif /* _FT_TYPE_TRAITS_HPP */
