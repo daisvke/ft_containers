@@ -1,5 +1,5 @@
-#ifndef _FTrb_TREE_HPP
-# define _FTrb_TREE_HPP
+#ifndef _FT_TREE_HPP
+# define _FT_TREE_HPP
 
 # include <memory>
 
@@ -161,7 +161,7 @@ namespace ft {
 		typedef rb_tree_iterator<T>					iterator;
 
 		typedef rb_tree_const_iterator<T>			self;
-		typedef rb_tree_node_base::const_base_ptr		base_ptr;
+		typedef rb_tree_node_base::const_base_ptr	base_ptr;
 		typedef rb_tree_node<T>						*link_type;
 		
 		/*************************************************************
@@ -215,7 +215,7 @@ namespace ft {
 	/*************************************************************
 	 * Red-Black Tree class
 	*************************************************************/
-	template<typename Key, typename Val, typename _KeyOfValue,
+	template<typename Key, typename Val, typename KeyOfValue,
 	   typename Compare, typename Alloc = std::allocator<Val> >
     class rb_tree
 	{
@@ -229,7 +229,7 @@ namespace ft {
 			typedef rb_tree_node_base* 			base_ptr;
 			typedef const rb_tree_node_base* 	const_base_ptr;
 			typedef rb_tree_node<Val>* 			link_type;
-			typedef const rb_tree_node<Val>*	constlink_type;
+			typedef const rb_tree_node<Val>*	const_link_type;
 
 
 		private:
@@ -329,8 +329,211 @@ namespace ft {
 			
 			rb_tree_impl<Compare> _impl;
 
-	};
+			base_ptr&		root() { return _impl._header._parent; }
+			const_base_ptr	root() const { return _impl._header._parent; }
+
+			base_ptr&		leftmost() { return _impl._header._left; }
+			const_base_ptr	leftmost() const { return _impl._header._left; }
+
+			base_ptr&		rightmost() { return _impl._header._right; }
+			const_base_ptr	rightmost() const { return _impl._header._right; }
+
+			link_type		_mbegin() const 
+			{ return static_cast<link_type>(_impl._header._parent); }
+			link_type		_begin() { return _mbegin(); }
+			const_link_type	_begin() const
+			{ return static_cast<const_link_type>(_impl._header._parent); }
+
+			base_ptr		_end() { return &_impl._header; }
+			const_base_ptr	_end() const { return &_impl._header; }
+
+			static const Key&	key(const_link_type x)
+			{ return KeyOfValue()(*x->_valptr()); }
+
+			static link_type		left(base_ptr x)
+			{ return static_cast<link_type>(x->_left); }
+			static const_link_type	left(const_base_ptr x)
+			{ return static_cast<const_link_type>(x->_left); }
+
+			static link_type	right(base_ptr x)
+			{ return static_cast<link_type>(x->_right); }
+			static const_link_type	right(const_base_ptr x)
+			{ return static_cast<const_link_type>(x->_right); }
+
+			static const Key&	key(const_base_ptr x)
+			{ return key(static_cast<const_link_type>(x)); }
+
+			static base_ptr	minimum(base_ptr x)
+			{ return rb_tree_node_base::minimum(x); }
+
+			static const_base_ptr	minimum(const_base_ptr x)
+			{ return rb_tree_node_base::minimum(x); }
+
+			static base_ptr	maximum(base_ptr x)
+			{ return rb_tree_node_base::maximum(x); }
+
+			static const_base_ptr	maximum(const_base_ptr x)
+			{ return rb_tree_node_base::maximum(x); }
+
+
+		public:
+
+			typedef rb_tree_iterator<value_type>			iterator;
+			typedef rb_tree_const_iterator<value_type>		const_iterator;
+
+			typedef ft::reverse_iterator<iterator>			reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+
+			ft::pair<base_ptr, base_ptr> get_insert_unique_pos(const key_type& k);
+			ft::pair<base_ptr, base_ptr> get_insert_equal_pos(const key_type& k);
+			ft::pair<base_ptr, base_ptr> get_insert_hint_unique_pos(const_iterator pos,
+							const key_type& k);
+			ft::pair<base_ptr, base_ptr> get_insert_hint_equal_pos(const_iterator pos,
+						const key_type& k);
+
+
+		private:
+
+		    template<typename _NodeGen>
+			iterator
+			insert_(base_ptr x, base_ptr y, const value_type& v, _NodeGen&);
+
+			// Insertion hints in associative containers.
+			iterator	insert_lower(base_ptr y, const value_type& v);
+			iterator	insert_equal_lower(const value_type& x);
+
+			enum { as_lvalue, as_rvalue };
+
+
+			template<bool MoveValues, typename NodeGen>
+			link_type	copy(link_type, base_ptr, NodeGen&);
+
+			template<bool MoveValues, typename NodeGen>
+			link_type	copy(const rb_tree& x, NodeGen& gen)
+			{
+				link_type root = copy<MoveValues>(x._mbegin(), _end(), gen);
+				leftmost() = minimum(root);
+				rightmost() = maximum(root);
+				_impl._node_count = x._impl._node_count;
+				return root;
+			}
+
+			link_type	copy(const rb_tree& x)
+			{
+				alloc_node	an(*this);
+				return copy<as_lvalue>(x, an);
+			}
+
+			void	erase(link_type x);
+
+			iterator		lower_bound(link_type x, base_ptr y, const Key& k);
+			const_iterator	lower_bound(const_link_type x, const_base_ptr y,
+					const Key& k) const;
+
+			iterator		upper_bound(link_type x, base_ptr y, const Key& k);
+			const_iterator	upper_bound(const_link_type x, const_base_ptr y,
+					const Key& k) const;
+
+
+		public:
+
+		    rb_tree() {}
+
+			rb_tree(const Compare& comp, const allocator_type& a = allocator_type())
+			: _impl(comp, node_allocator(a)) { }
+
+			rb_tree(const rb_tree& x) : _impl(x._impl)
+			{ if (x.root() != 0) root() = copy(x); }
+
+			~rb_tree() { erase(begin()); }
+
+			rb_tree&	operator=(const rb_tree& x);
+
+			// Accessors.
+			Compare	key_comp() const { return _impl._key_compare; }
+
+			iterator				begin()
+			{ return iterator(_impl._header._left); }
+			const_iterator			begin() const
+			{ return const_iterator(this->_impl._header._left); }
+
+			iterator				end() { return iterator(&_impl._header); }
+			const_iterator			end() const
+			{ return const_iterator(&_impl._header); }
+
+			reverse_iterator		rbegin() { return reverse_iterator(end()); }
+			const_reverse_iterator	rbegin() const
+			{ return const_reverse_iterator(end()); }
+
+			reverse_iterator		rend() { return reverse_iterator(begin()); }
+			const_reverse_iterator	rend() const
+			{ return const_reverse_iterator(begin()); }
+
+			bool		empty() const { return _impl._node_count == 0; }
+
+			size_type	size() const { return _impl._node_count; }
+
+			size_type	max_size() const
+			{ return alloc_traits::max_size(get_node_allocator()); }
+
+			void		swap(rb_tree& t);
+
+			pair<iterator, bool>	insert_unique(const value_type& x);
+			iterator				insert_equal(const value_type& x);
+
+			template<typename NodeGen>
+			iterator	insert_unique_(const_iterator pos, const value_type& x,
+						NodeGen&);
+			iterator	insert_unique_(const_iterator pos, const value_type& x)
+			{
+				alloc_node an(*this);
+				return insert_unique_(pos, x, an);
+			}
+
+			template<typename NodeGen>
+			iterator	insert_equal_(const_iterator pos, const value_type& x,
+						NodeGen&);
+			iterator	insert_equal_(const_iterator pos, const value_type& x)
+			{
+				alloc_node an(*this);
+				return insert_equal_(pos, x, an);
+			}
+
+			template<typename _InputIterator>
+			void	insert_range_unique(_InputIterator first, _InputIterator last)
+			{
+				alloc_node an(*this);
+				for (; first != last; ++first)
+					insert_unique_(end(), *first, an);
+			}
+
+			template<typename _InputIterator>
+			void	insert_range_equal(_InputIterator first, _InputIterator last)
+			{
+				alloc_node an(*this);
+				for (; first != last; ++first)
+					insert_equal_(end(), *first, an);
+			}
+
+		private:
+			void		erase_aux(const_iterator position);
+			void		erase_aux(const_iterator first, const_iterator last);
+
+      		void		erase(iterator position)
+			{ erase_aux(position); }
+
+			void		erase(const_iterator position)
+			{ erase_aux(position); }
+			
+			size_type	erase(const key_type& x);
+			void		erase(iterator first, iterator last)
+		    { erase_aux(first, last); }
+			
+			void		erase(const_iterator first, const_iterator last)
+      		{ erase_aux(first, last); }
+
+	}; // rb_tree class
 	
 }; // namespace ft
 
-#endif /* _FTrb_TREE_HPP */
+#endif /* _FT_TREE_HPP */
