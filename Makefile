@@ -30,7 +30,9 @@ INC_FILES		=	algorithm.hpp \
 					type_traits.hpp \
 					iterator.hpp \
 					utility.hpp \
-					map.hpp
+					map.hpp \
+					rbTree.hpp \
+					tree_cc.hpp
 INCS			=	$(addprefix $(INC_DIR), $(INC_FILES))
 
 
@@ -44,16 +46,19 @@ $(NAME): $(OBJS)
 		$(CXX) -o $@ $(OBJS)
 
 $(OBJS): $(SRCS) $(INCS)
-		mkdir -p objs/
-		$(CXX) $(CXXFLAGS) -I$(INC_DIR) $(DEBUG) -c $< -o $@
+		mkdir -p $(OBJS_DIR)
+		$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $< -o $@
 
 
 # C L E A N  &  O T H E R  R U L E S #
+
+debug: $(OBJS) $(INCS)
+		$(CXX) $(DEBUG) -o $@ $(OBJS)
 
 clean:
 	rm -rf $(OBJS_DIR)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) debug
 
 re: fclean all

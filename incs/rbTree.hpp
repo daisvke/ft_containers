@@ -1,149 +1,336 @@
-#ifndef RBTREE_HPP
-# define RBTREE_HPP
+#ifndef _FTrb_TREE_HPP
+# define _FTrb_TREE_HPP
+
+# include <memory>
 
 # include "utility.hpp"
+# include "tree_cc.hpp"
 
 /*************************************************************
  * A Red-Black Tree implementation.
+ 
+ * Designed for use in implementing STL associative containers
+ 	(set and map, etc)
 
- * This is used in Map and Set classes
+ * The header cell is maintained with links not only to the root
+	but also to the leftmost node of the tree, to enable constant
+	time begin(), and to the rightmost node of the tree, to enable
+	linear time performance when used with the generic set algorithms
+
+ * When a node being deleted has two children its successor node
+	is relinked into its place, rather than copied, so that the only
+	iterators invalidated are those referring to the deleted node.
 *************************************************************/
 
 namespace ft {
 
-	enum	rbTreeColor { _RED, _BLACK };
+	  // Helper type offering value initialization guarantee on the compare functor.
+  	template<typename Key_compare>
+    struct	rb_tree_key_compare
+    {
+		Key_compare	_key_compare;
 
+		rb_tree_key_compare() : _key_compare() {}
 
+		rb_tree_key_compare(const Key_compare& comp) : _key_compare(comp) {}
+	};
+
+	
 	/*************************************************************
-	|* node
+	 * Tree header
+	
+	 * Helper type to manage default initialization of node count and header
 	*************************************************************/
-	template < class Key, class T>
-	struct rbNode
+	struct	rb_tree_header
 	{
-		typedef ft::pair<const Key, T>	value_type;
+		rb_tree_node_base	_header;
+		std::size_t			_node_count; // Keeps track of size of tree.
 
-		rbNode		*parent, *left, *right;
-		rbTreeColor	color;
-		value_type	data;
+		rb_tree_header() { _header._color = _red; reset(); }
 
-		rbNode() : data(), parent(), left(), right(), color(_BLACK) {}
-
-		rbNode(value_type &data, rbNode *parent)
-				: data(data), parent(parent), left(), right(), color(_BLACK) {}
-
-		rbNode	&operator=(const rbNode &obj)
-		{
-			data = obj.data;
-			parent = obj.parent; left = obj.left; right = obj.right;
-			color = obj.color;
-			return *this;
+		void	move_data(rb_tree_header& from) {
+			_header._color = from._header._color;
+			_header._parent =from._header._parent;
+			_header._left = from._header._left;
+			_header._right = from._header._right;
+			_header._parent->_parent = &_header;
+			_node_count = from._node_count;
+			from.reset();
 		}
 
-		const Key	&key(void) { return data.first; }
-		T			&value(void) { return data.second; }
+		void	reset()
+		{
+			_header._parent = 0;
+			_header._left = &_header;
+			_header._right = &_header;
+			_node_count = 0;
+		}
+	};
+
+	/*************************************************************
+	 * Red-Black Tree node
+	*************************************************************/
+	template<typename Val>
+	struct rb_tree_node : public rb_tree_node_base {
+		typedef rb_tree_node<Val>* link_type;
+		Val	Value_field;
+
+		Val			*valptr() { return &Value_field; }
+		const Val	*valptr() const { return &Value_field; }
 	};
 
 
 	/*************************************************************
-	|* iterator
+	|* Red-Black Tree iterator
 	*************************************************************/
-	template < class Key, class T, class Compare = std::less<Key> >
-	class	rbIterator
+	template <typename T>
+	struct	rb_tree_iterator
+	{			
+		/*************************************************************
+		 * Types
+		*************************************************************/
+		typedef std::ptrdiff_t					difference_type;
+		typedef T								value_type;
+		typedef value_type*						pointer;
+		typedef value_type&						reference;
+		typedef std::bidirectional_iterator_tag	iterator_category;
+
+		typedef rb_tree_iterator<T>				self;
+		typedef rb_tree_node_base::base_ptr		base_ptr;
+		typedef rb_tree_node<T>					*link_type;
+		
+		/*************************************************************
+		 * Construct/Copy/Destroy
+		*************************************************************/
+		rb_tree_iterator() : _node() {}
+		explicit rb_tree_iterator(base_ptr x) : _node(x) {}
+
+		/*************************************************************
+		 * Accessing operators
+		*************************************************************/
+		reference	operator*(void) const { return *static_cast<link_type>(_node)->valptr(); }
+		reference	operator->(void) const { return static_cast<link_type>(_node)->valptr(); }
+
+		/*************************************************************
+		 * Incrementing operators
+		*************************************************************/
+		// Get the next node in key value order
+		self		&operator++() { _node = rb_tree_increment(_node); return *this; }
+		self		operator++(int) {
+			self	tmp = *this;
+			_node = rb_tree_increment(_node);
+			return tmp;
+		}
+		
+		// Get the previous node in key value order
+		self		&operator--() { _node = rb_tree_decrement(_node); return *this; }
+		self		operator--(int) {
+			self	tmp = *this;
+			_node = rb_tree_decrement(_node);
+			return tmp;
+		}
+
+		/*************************************************************
+		 * Boolean operators
+		*************************************************************/
+		friend bool	operator==(const self& x, const self& y)
+		{ return x._node == y._node; }
+
+		friend bool	operator!=(const self& x, const self& y)
+		{ return x._node != y._node; }
+
+		base_ptr	_node;
+	}; // rb_tree_iterator
+
+
+	/*************************************************************
+	|* Red-Black Tree const iterator
+	*************************************************************/
+	template <typename T>
+	struct	rb_tree_const_iterator
+	{			
+		/*************************************************************
+		 * Types
+		*************************************************************/
+		typedef std::ptrdiff_t						difference_type;
+		typedef T									value_type;
+		typedef const value_type*					pointer;
+		typedef const value_type&					reference;
+		typedef std::bidirectional_iterator_tag		iterator_category;
+
+		typedef rb_tree_iterator<T>					iterator;
+
+		typedef rb_tree_const_iterator<T>			self;
+		typedef rb_tree_node_base::const_base_ptr		base_ptr;
+		typedef rb_tree_node<T>						*link_type;
+		
+		/*************************************************************
+		 * Construct/Copy/Destroy
+		*************************************************************/
+		rb_tree_const_iterator() : _node() {}
+		explicit rb_tree_const_iterator(base_ptr x) : _node(x) {}
+		explicit rb_tree_const_iterator(const iterator& it) : _node(it._node) {}
+
+		iterator	_const_cast() const
+		{ return iterator(const_cast<typename iterator::base_ptr>(_node)); }
+
+		/*************************************************************
+		 * Accessing operators
+		*************************************************************/
+		reference	operator*(void) const { return *static_cast<link_type>(_node)->valptr(); }
+		reference	operator->(void) const { return static_cast<link_type>(_node)->valptr(); }
+
+		/*************************************************************
+		 * Incrementing operators
+		*************************************************************/
+		// Get the next node in key value order
+		self		&operator++() { _node = rb_tree_increment(_node); return *this; }
+		self		operator++(int) {
+			self	tmp = *this;
+			_node = rb_tree_increment(_node);
+			return tmp;
+		}
+		
+		// Get the previous node in key value order
+		self		&operator--() { _node = rb_tree_decrement(_node); return *this; }
+		self		operator--(int) {
+			self	tmp = *this;
+			_node = rb_tree_decrement(_node);
+			return tmp;
+		}
+
+		/*************************************************************
+		 * Boolean operators
+		*************************************************************/
+		friend bool	operator==(const self& x, const self& y)
+		{ return x._node == y._node; }
+
+		friend bool	operator!=(const self& x, const self& y)
+		{ return x._node != y._node; }
+
+		base_ptr	_node;
+	}; // rb_tree_const_iterator
+
+
+	/*************************************************************
+	 * Red-Black Tree class
+	*************************************************************/
+	template<typename Key, typename Val, typename _KeyOfValue,
+	   typename Compare, typename Alloc = std::allocator<Val> >
+    class rb_tree
 	{
-		public:
-			
-			/*************************************************************
-			 * Types
-			*************************************************************/
-			typedef std::ptrdiff_t					difference_type;
-			typedef ft::pair<const Key, T>			value_type;
-			typedef ft::rbNode<const Key, T>		node_type;
-			typedef value_type*						pointer;
-			typedef const value_type*				const_pointer;
-			typedef value_type&						reference;
-			typedef const value_type&				const_reference;
-		//	typedef std::bidirectional_iterator_tag	iterator_category;
-			
-			/*************************************************************
-			 * Construct/Copy/Destroy
-			*************************************************************/
-			rbIterator() : _node() {}
-			rbIterator(const node_type *node) : _node(node) {}
-			rbIterator(const rbIterator &it) : _node(it.base()) {}
-			~rbIterator() {}
+    	typedef typename __gnu_cxx::__alloc_traits<Alloc>::template
+		rebind<rb_tree_node<Val> >::other				node_allocator;
 
-			/*************************************************************
-			 * Getters
-			*************************************************************/
-			pointer	base(void) const { return _node; }
+    	typedef __gnu_cxx::__alloc_traits<node_allocator>	alloc_traits;
 
-			// Go as far left from the node as possible = find the min node in subtree
-			void leftmost(void) { while (_node->left) _node = _node->left; }
-			// Go as far right from the node as possible = find the max node in subtree
-			void rightmost(void) { while (_node->right) _node = _node->right; }
+		protected:
 
-			/*************************************************************
-			 * Assigning operator
-			*************************************************************/
-			rbIterator& 	operator=(const rbIterator& x) { _node = x.base(); return  *this; }
-
-			/*************************************************************
-			 * Accessing operators
-			*************************************************************/
-			reference	operator*(void) const { return _node->data; }
-			pointer		operator->(void) const { return &_node->value; }
-
-			/*************************************************************
-			 * Incrementing operators
-			*************************************************************/
-			// Get the next node in key value order
-			rbIterator&	operator++(void) {
-				// If there is a right subtree, go to its leftmost (=minimal) node
-				if (_node->right) { _node = _node->right; leftmost(); }
-				else
-				{
-					// Otherwise go up the tree, looking for a node
-					//  that is its parent's left child.
-					while (_node->parent && _node != _node->parent->left)
-						_node = _node->parent;
-					_node = _node->parent;
-				}	
-				return *this;
-			}
-	/*		rbIterator	operator++(int) {
-				rbIterator	tmp(*this);
-				++(*this);
-				return tmp;
-			}
-	*/
-			// Get the previous node in key value order
-			rbIterator&	operator--(void) {
-				// If there is a left subtree, go to its rightmost (=maximal) node
-				if (_node->left) { _node = _node->left; rightmost(); }
-				else
-				{
-					// Otherwise go up the tree, looking for a node
-					//  that is its parent's right child.
-					while (_node->parent && _node != _node->parent->right)
-						_node = _node->parent;
-					_node = _node->parent;
-				}	
-				return *this;
-			}
-	/*
-			rbIterator	operator--(int) {
-				rbIterator	tmp(*this);
-				--(*this);
-				return tmp;
-			}
-	*/
+			typedef rb_tree_node_base* 			base_ptr;
+			typedef const rb_tree_node_base* 	const_base_ptr;
+			typedef rb_tree_node<Val>* 			link_type;
+			typedef const rb_tree_node<Val>*	constlink_type;
 
 
 		private:
 
-			node_type	*_node;
-	}; // End of rbIterator
-	
-}; // End of namespace ft
+			struct alloc_node
+			{
+				alloc_node(rb_tree& t) : _t(t) { }
 
-#endif
+				template<typename Arg>
+				link_type	operator()(Arg arg) const { return _t._create_node(arg); }
+
+				private:
+					rb_tree& _t;
+			};
+		
+
+		public:
+
+			typedef Key 				key_type;
+			typedef Val 				value_type;
+			typedef value_type* 		pointer;
+			typedef const value_type* 	const_pointer;
+			typedef value_type& 		reference;
+			typedef const value_type& 	const_reference;
+			typedef std::size_t 		size_type;
+			typedef std::ptrdiff_t 		difference_type;
+			typedef Alloc 				allocator_type;
+
+			node_allocator&		get_node_allocator() { return _impl; }
+
+			const node_allocator&	get_node_allocator() const { return _impl; }
+
+			allocator_type			get_allocator() const
+			{ return allocator_type(get_node_allocator()); }
+
+
+		protected:
+
+      		link_type	get_node()
+			{ return alloc_traits::allocate(get_node_allocator(), 1); }
+
+			void		put_node(link_type p)
+			{ alloc_traits::deallocate(get_node_allocator(), p, 1); }
+
+			void		construct_node(link_type node, const value_type& x)
+			{
+				try
+				{ get_allocator().construct(node->valptr(), x); }
+				catch (...)
+				{ put_node(node); throw; }
+      		}
+
+			link_type	create_node(const value_type& x)
+      		{
+				link_type tmp = get_node();
+				construct_node(tmp, x);
+				return tmp;
+      		}
+
+	     	void	destroy_node(link_type p)
+			{ get_allocator().destroy(p->valptr()); }
+
+			void	drop_node(link_type p)
+			{
+				destroy_node(p);
+				put_node(p);
+			}
+
+			template<bool MoveValue, typename NodeGen>
+			link_type	clone_node(link_type x, NodeGen& node_gen)
+			{
+				link_type	tmp = node_gen( *x->_valptr());
+
+				tmp->_color = x->_color;
+				tmp->_left = 0;
+				tmp->_right = 0;
+				return tmp;
+			}
+		
+			template<typename Key_compare>
+			struct rb_tree_impl
+				: public node_allocator
+				, public rb_tree_key_compare<Key_compare>
+				, public rb_tree_header
+			{
+				typedef rb_tree_key_compare<Key_compare> base_key_compare;
+
+				rb_tree_impl() : node_allocator() {}
+
+				rb_tree_impl(const rb_tree_impl& x)
+				: node_allocator(alloc_traits::select_on_copy(x))
+				, base_key_compare(x._key_compare), rb_tree_header() {}
+
+				rb_tree_impl(const Key_compare& comp, const node_allocator& a)
+				: node_allocator(a), base_key_compare(comp) {}
+			};
+			
+			rb_tree_impl<Compare> _impl;
+
+	};
+	
+}; // namespace ft
+
+#endif /* _FTrb_TREE_HPP */
