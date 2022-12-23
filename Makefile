@@ -31,7 +31,7 @@ INC_FILES		=	algorithm.hpp \
 					iterator.hpp \
 					utility.hpp \
 					map.hpp \
-					rbTree.hpp \
+					tree.hpp \
 					tree_cc.hpp
 INCS			=	$(addprefix $(INC_DIR), $(INC_FILES))
 
