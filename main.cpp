@@ -15,7 +15,7 @@
 	#define _NAMESPACE	"FT"
 //	#include "stack.hpp"
 	#include "vector.hpp"
-	#include "rbTree.hpp"
+	#include "map.hpp"
 #endif
 
 #include <stdlib.h>
@@ -84,7 +84,7 @@ int main(int argc, char** argv) {
 //	ft::stack<size_t> stack_size_t;
 	ft::vector<Buffer> vector_buffer;
 //	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
-//	ft::map<size_t, size_t> map_size_t;
+	ft::map<size_t, size_t> map_size_t;
 	
 	print_testname("vector_str: push_back(hello 'i') x 3");
 	for (size_t i = 0; i < 3; i++)
@@ -140,13 +140,13 @@ int main(int argc, char** argv) {
 //	if (rbegin == end)
 //		std::cout << "begin and rbegin are the same" << std::endl;
 	
-/*
+
 	std::cout << std::endl;
 	std::cout << "vector_int: assign() '8' x 4" << std::endl;
 	vector_int.assign(4, 8);
 	for (size_t i = 0; i < 4; ++i)
 		std::cout << vector_int[i] << std::endl;
-*/
+
 
 	print_testname( "vector_str: insert 'HERE' at position 2");
 	ft::vector<std::string>::iterator it_str = vector_str.begin() + 2;

@@ -128,7 +128,7 @@ namespace ft {
 			// Erase at end if n is smaller than the vector size
 			if (n < _size)
 				for (size_type i(n); i < _size; ++i)
-					_alloc.destroy(_array[i]);
+					_alloc.destroy(_array + i);
 			// Update vector size
 			_size = n;
 		}
