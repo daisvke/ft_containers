@@ -4,7 +4,7 @@
 # include <iterator>
 
 /*************************************************************
- * Implementation of three classes from header <iterator>:
+ * Implementation of three classes from the iterator library:
 	1. iterator_traits
 	2. random_access_iterator
 	3. reverse_iterator

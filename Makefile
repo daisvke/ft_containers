@@ -24,16 +24,15 @@ OBJS			=	$(addprefix $(OBJS_DIR), $(OBJS_FILES))
 
 # I N C .  F I L E S #
 
-INC_DIR			=	incs/
-INC_FILES		=	algorithm.hpp \
+INC_DIR			=	.
+INCS			=	algorithm.hpp \
 					vector.hpp \
 					type_traits.hpp \
 					iterator.hpp \
 					utility.hpp \
 					map.hpp \
 					tree.hpp \
-					tree_cc.hpp
-INCS			=	$(addprefix $(INC_DIR), $(INC_FILES))
+					tree_libstdc.hpp
 
 
 #  B U I L D  R U L E S #

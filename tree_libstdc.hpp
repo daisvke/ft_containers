@@ -1,7 +1,9 @@
 #ifndef _FT_TREE_CC_HPP
 # define _FT_TREE_CC_HPP
 
-
+/*************************************************************
+ * A Red-Black Tree utilities implementation
+*************************************************************/
 
 namespace ft {
 

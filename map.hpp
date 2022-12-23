@@ -35,24 +35,24 @@ namespace ft {
 				value_compare (Compare c) : comp(c) {} // constructed with map's comparison object
 
 			public:
-				typedef bool result_type;
-				typedef value_type first_argument_type;
-				typedef value_type second_argument_type;
+				typedef bool		result_type;
+				typedef value_type	first_argument_type;
+				typedef value_type	second_argument_type;
 
 				bool operator() (const value_type& x, const value_type& y) const
 				{ return comp(x.first, y.first); }
 		};
 
       	typedef typename __gnu_cxx::__alloc_traits<Alloc>::template
-		rebind<value_type>::other pair_alloc_type;
+		rebind<value_type>::other							pair_alloc_type;
 
 		typedef rb_tree<key_type, value_type, std::_Select1st<value_type>,
-    					key_compare, pair_alloc_type> rep_type;
+    					key_compare, pair_alloc_type>		rep_type;
 
     	/// The actual tree structure.
-      	rep_type _t;
+      	rep_type	_t;
 
-		typedef __gnu_cxx::__alloc_traits<pair_alloc_type> alloc_traits;
+		typedef __gnu_cxx::__alloc_traits<pair_alloc_type>	alloc_traits;
 
 
 	public:
@@ -131,11 +131,11 @@ namespace ft {
 		 * Capacity
 		*************************************************************/
 	    // Returns true if the map is empty. (Thus begin() would equal end().)
-		bool empty() const { return _t.empty(); }
+		bool 		empty() const { return _t.empty(); }
 		// Returns the size of the map
-		size_type size() const { return _t.size(); }
+		size_type 	size() const { return _t.size(); }
 		// Returns the maximum size of the map
-		size_type max_size() const { return _t.max_size(); }
+		size_type	max_size() const { return _t.max_size(); }
 
 		/*************************************************************
 		 * Element access
@@ -149,7 +149,7 @@ namespace ft {
 			iterator	i = lower_bound(k);
 			// i->first is greater than or equivalent to k.
 			if (i == end() || key_comp()(k, (*i).first))
-				i = insert(i, value_type(k, mapped_type()));
+				i = insert(const_iterator(i), value_type(k, mapped_type()));
 			return (*i).second;
     	}
 
@@ -158,7 +158,7 @@ namespace ft {
     	//  A reference to the data whose key is equivalent to k, if
     	//  such a data is present in the map.
     	// std::out_of_range  If no such data is present.
-		mapped_type&	at(const key_type& k)
+		mapped_type&		at(const key_type& k)
 		{
 			iterator i = lower_bound(k);
 			if (i == end() || key_comp()(k, (*i).first))
@@ -166,8 +166,7 @@ namespace ft {
 			return (*i).second;
 		}
 
-		const mapped_type&
-		at(const key_type& k) const
+		const mapped_type&	at(const key_type& k) const
 		{
 			const_iterator i = lower_bound(k);
 			if (i == end() || key_comp()(k, (*i).first))
@@ -196,32 +195,32 @@ namespace ft {
 		// parameter is only a hint and can potentially improve the
 		// performance of the insertion process.  A bad hint would
 		// cause no gains in efficiency.
-		iterator insert(iterator position, const value_type& x)
+		iterator	insert(const_iterator position, const value_type& x)
 		{ return _t.insert_unique(position, x); }
 
 		// Template function that attempts to insert a range of elements
 		template <typename InputIterator>
-		void insert(InputIterator first, InputIterator last)
-		{ return _t.insert_unique(first, last); }
+		void		insert(InputIterator first, InputIterator last)
+		{ return _t.insert_range_unique(first, last); }
 
     	// This function erases an element, pointed to by the given
     	// iterator, from a %map.  Note that this function only erases
     	// the element, and that if the element is itself a pointer,
     	// the pointed-to memory is not touched in any way.  Managing
     	// the pointer is the user's responsibility.
-		void erase(iterator position) { _t.erase(position); }
+		void		erase(iterator position) { _t.erase(position); }
 
 		// Erases elements according to the provided key
-		size_type erase(const key_type& x) { _t.erase(x); }
+		size_type	erase(const key_type& x) { return _t.erase(x); }
 
 		// Erases a [__first,__last) range of elements from a map
-		void erase(iterator first, iterator last) { _t.erase(first, last); }
+		void		erase(iterator first, iterator last) { _t.erase(first, last); }
 
 		// Swaps data with another map
-		void swap(map& x) { _t.swap(x._t); }
+		void		swap(map& x) { _t.swap(x._t); }
 
 		// Erases all elements in a map
-		void clear() { _t.clear(); }
+		void		clear() { _t.clear(); }
 
 		/*************************************************************
 		 * Observers

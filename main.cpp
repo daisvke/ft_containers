@@ -30,7 +30,7 @@ struct Buffer
 
 
 //#define COUNT (MAX_RAM / (size_t)sizeof(Buffer))
-#define COUNT 4
+#define COUNT 5
 
 /*
 
@@ -62,7 +62,7 @@ void print_testname(const char *name) {
 }
 
 int main(int argc, char** argv) {
-	/*
+	
 	if (argc != 2)
 	{
 		std::cerr << "Usage: ./test seed" << std::endl;
@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
 	}
 	const size_t seed = atoi(argv[1]);
 	srand(seed);
-*/
+
 
 	// Check which namespace will be used
 	std::cout << std::endl <<
@@ -84,39 +84,46 @@ int main(int argc, char** argv) {
 //	ft::stack<size_t> stack_size_t;
 	ft::vector<Buffer> vector_buffer;
 //	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
-	ft::map<size_t, size_t> map_size_t;
+	ft::map<int, int> map_int;
 	
-	print_testname("vector_str: push_back(hello 'i') x 3");
-	for (size_t i = 0; i < 3; i++)
-	{
-		std::stringstream	res;
-		res << "hello " << i;
-		vector_str.push_back(res.str());
-	}
-
-	std::cout << "size: " << vector_str.size() << ", cap: " << vector_str.capacity() << std::endl;
-	for (size_t i = 0; i < vector_str.size(); ++i)
-		std::cout << vector_str[i] << std::endl;
-
 //	std::cout << "count: " << COUNT << std::endl;
-	print_testname("vector_buffer: push_back(Buffer()) x 4");
-	for (size_t i = 0; i < 4; i++)
-	{
+	print_testname("vector_buffer: push_back(Buffer()) x COUNT");
+	for (size_t i = 0; i < COUNT; i++)
 		vector_buffer.push_back(Buffer());
-	}
 
 	for (size_t i = 0; i < vector_buffer.size(); ++i)
 		std::cout << vector_buffer[i].idx << std::endl;
 
-	print_testname("vector_buffer: assign value with =op x 4");
+	print_testname("vector_buffer: assign value with =op x ");
 	for (size_t i = 0; i < COUNT; i++)
 	{
-		vector_buffer[i].idx = i;
+		const int idx = rand() % COUNT;
+		vector_buffer[idx].idx = 5;
 	}
 	for (size_t i = 0; i < vector_buffer.size(); ++i)
 		std::cout << vector_buffer[i].idx << std::endl;
 
-	print_testname("vector_buffer: assign value with =op x 4");
+	// print_testname("vector_buffer: swap with empty vector<Buffer>");
+
+	// ft::vector<Buffer>().swap(vector_buffer);
+
+	// try
+	// {
+	// 	for (size_t i = 0; i < COUNT; i++)
+	// 	{
+	// 		const size_t idx = rand() % COUNT;
+	// 		vector_buffer.at(idx);
+	// 		std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
+	// 	}
+	// }
+	// catch(const std::exception& e)
+	// {
+	// 	//NORMAL ! :P
+	// }
+
+	std::cout << std::endl;
+
+	print_testname("vector_buffer: assign value with =op x COUNT");
 	for (size_t i = 0; i < COUNT; i++)
 	{
 		std::stringstream	res;
@@ -129,24 +136,31 @@ int main(int argc, char** argv) {
 
 	print_testname("vector_buffer: begin(), end()");
 	ft::vector<Buffer>::iterator	begin = vector_buffer.begin();
-	ft::vector<Buffer>::iterator	end = vector_buffer.end() - 1;
+	ft::vector<Buffer>::iterator	end = --vector_buffer.end();
 	std::cout << "begin: " << begin->idx << ", end: " << end->idx << std::endl;
 
 	print_testname("vector_buffer: rbegin(), rend()");
-	ft::vector<Buffer>::reverse_iterator	rbegin = vector_buffer.rbegin() + 1;
+	ft::vector<Buffer>::reverse_iterator	rbegin = ++vector_buffer.rbegin();
 	ft::vector<Buffer>::reverse_iterator	rend = vector_buffer.rend();
 	std::cout << "rbegin: " << rbegin->idx << ", rend: " << rend->idx << std::endl;
 
-//	if (rbegin == end)
-//		std::cout << "begin and rbegin are the same" << std::endl;
-	
-
 	std::cout << std::endl;
-	std::cout << "vector_int: assign() '8' x 4" << std::endl;
+	print_testname("vector_int: assign() '8' x 4");
 	vector_int.assign(4, 8);
 	for (size_t i = 0; i < 4; ++i)
 		std::cout << vector_int[i] << std::endl;
 
+	print_testname("vector_str: push_back(hello 'i') x 3");
+	for (size_t i = 0; i < 3; i++)
+	{
+		std::stringstream	res;
+		res << "hello " << i;
+		vector_str.push_back(res.str());
+	}
+
+	std::cout << "size: " << vector_str.size() << ", cap: " << vector_str.capacity() << std::endl;
+	for (size_t i = 0; i < vector_str.size(); ++i)
+		std::cout << vector_str[i] << std::endl;
 
 	print_testname( "vector_str: insert 'HERE' at position 2");
 	ft::vector<std::string>::iterator it_str = vector_str.begin() + 2;
@@ -176,32 +190,6 @@ int main(int argc, char** argv) {
 	for (size_t i = 0; i < vector_str.size(); ++i)
 		std::cout << vector_str[i] << std::endl;
 
-
-
-	for (size_t i = 0; i < COUNT; i++)
-	{
-		const size_t idx = rand() % COUNT;
-		vector_buffer[idx].idx = 5;
-	}
-
-	ft::vector<Buffer>().swap(vector_buffer);
-
-	try
-	{
-		for (size_t i = 0; i < COUNT; i++)
-		{
-			const size_t idx = rand() % COUNT;
-			vector_buffer.at(idx);
-			std::cerr << "Error: THIS VECTOR SHOULD BE EMPTY!!" <<std::endl;
-		}
-	}
-	catch(const std::exception& e)
-	{
-		//NORMAL ! :P
-	}
-
-	std::cout << std::endl;
-
 	print_testname( "vector_int:	v1: {1, 2, 3}	v2 = v1. Comparing the two using '=='");
 
 	ft::vector<int>	v1;
@@ -224,23 +212,91 @@ int main(int argc, char** argv) {
 		}
 	}
 
-/*
+	print_testname( "map_int:	insert ft::make_pair(i,i)");
+
 	for (size_t i = 0; i < COUNT; ++i)
 	{
-		map_size_t.insert(ft::make_pair(rand(), rand()));
+		map_int.insert(ft::make_pair(i, i));
 	}
+	for (ft::map<int, int>::iterator it = map_int.begin(); it != map_int.end(); ++it)
+		std::cout << "key: " << (*it).first << " => val: " << (*it).second << std::endl;
+
+
+	print_testname( "map_int:	insert {0, 42}, {1, 42}, {2, 4242}");
+
+	map_int[0] = 42;
+	map_int[1] = 42;
+	map_int[2] = 4242;
+
+	for (ft::map<int, int>::iterator it = map_int.begin(); it != map_int.end(); ++it)
+		std::cout << "key: " << (*it).first << " => val: " << (*it).second << std::endl;
+
+	print_testname( "map_int:	erase key=1");
+	map_int.erase(1);
+	for (ft::map<int, int>::iterator it = map_int.begin(); it != map_int.end(); ++it)
+		std::cout << "key: " << (*it).first << " => val: " << (*it).second << std::endl;
+
+
+	print_testname( "map_int:	at key=2 | at key=3");
+	std::cout << map_int.at(2) << " | " << map_int.at(3) << std::endl;
+
+	ft::map<int, int>	map_int2;
+
+	print_testname( "map_int2:	insert ft::make_pair(rand(),rand())");
+	for (int i = 0; i < COUNT; ++i)
+	{
+		map_int2.insert(ft::make_pair(rand(), rand()));
+	}
+	for (ft::map<int, int>::iterator it = map_int2.begin(); it != map_int2.end(); ++it)
+		std::cout << "key: " << (*it).first << " => val: " << (*it).second << std::endl;
+ 
+ 	ft::map<int, int>	map_int4;
 
 	size_t sum = 0;
-	for (size_t i = 0; i < 10000; i++)
+	for (size_t i = 0; i < 10; i++)
 	{
 		size_t access = rand();
-		sum += map_size_t[access];
+		sum += map_int4[access];
 	}
 	std::cout << "should be constant with the same seed: " << sum << std::endl;
 
-	{
-		ft::map<size_t, size_t> copy = map_size_t;
-	}
+	ft::map<int, int> copy = map_int4;
+	for (ft::map<int, int>::iterator it = copy.begin(); it != copy.end(); ++it)
+		std::cout << "key: " << (*it).first << " => val: " << (*it).second << std::endl;
+
+	// print_testname( "map_int2:	insert map_int from pos=1 to pos=3");
+	// ft::map<int, int>::iterator	it = map_int.begin(), first, last;
+	// size_t i = 0;
+
+	// for (; it != map_int.end(); ++it)
+	// {
+	// 	if (i == 1) first = it;
+	// 	if (i == 3) last = it;
+	// }
+	
+	// ft::map<int, int>	map_int3;
+	// map_int3.insert(first, last);
+
+	// for (ft::map<int, int>::iterator it = map_int3.begin(); it != map_int3.end(); ++it)
+	// 	std::cout << "key: " << (*it).first << " => val: " << (*it).second << std::endl;
+
+	print_testname("map_int2: begin(), end()");
+	
+	std::cout << "[begin] key: " << (*map_int2.begin()).first
+		<< " val: " << (*map_int2.begin()).second <<
+		"	[end] key:" << (*--map_int2.end()).first <<
+		" val: " << (*--map_int2.end()).second << std::endl;
+
+	print_testname("map_int2: rbegin(), rend()");
+
+	std::cout << "[begin] key: " << (*++map_int2.rbegin()).first
+		<< " val: " << (*++map_int2.rbegin()).second <<
+		"	[end] key:" << (*map_int2.rend()).first <<
+		" val: " << (*map_int2.rend()).second << std::endl;
+
+	//std::cout << "begin: " << map_int3.begin() << "	end: " << map_int3.end() << std::endl;
+
+	/*
 	MutantStack<char> iterable_stack;
 	for (char letter = 'a'; letter <= 'z'; letter++)
 		iterable_stack.push(letter);
