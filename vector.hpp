@@ -379,28 +379,28 @@ namespace ft {
 	 *  Relational operators
 	*************************************************************/
 	template <class T, class Alloc>
-	bool	operator== (const vector<T,Alloc>& l, const vector<T,Alloc>& r)
+	bool	operator==(const vector<T,Alloc>& l, const vector<T,Alloc>& r)
 	{
 		if (l.size() != r.size()) return false;
 		return ft::equal(l.begin(), l.end(), r.begin());
 	}
 
 	template <class T, class Alloc>
-	bool	operator!= (const vector<T,Alloc>& l, const vector<T,Alloc>& r) { return !(l == r); }
+	bool	operator!=(const vector<T,Alloc>& l, const vector<T,Alloc>& r) { return !(l == r); }
 
 	template <class T, class Alloc>
-	bool	operator< (const vector<T,Alloc>& l, const vector<T,Alloc>& r ) {
+	bool	operator<(const vector<T,Alloc>& l, const vector<T,Alloc>& r ) {
 		return ft::lexicographical_compare(l.begin(), l.end(), r.begin(), r.end());
 	}
 
 	template <class T, class Alloc>
-	bool	operator<= (const vector<T,Alloc>& l, const vector<T,Alloc>& r ) { return !(r < l); }
+	bool	operator<=(const vector<T,Alloc>& l, const vector<T,Alloc>& r ) { return !(r < l); }
 
 	template <class T, class Alloc>
-	bool	operator> (const vector<T,Alloc>& l, const vector<T,Alloc>& r )	{ return r < l; }
+	bool	operator>(const vector<T,Alloc>& l, const vector<T,Alloc>& r )	{ return r < l; }
 
 	template <class T, class Alloc>
-	bool	operator>= (const vector<T,Alloc>& l, const vector<T,Alloc>& r )	 { return !(l < r); }
+	bool	operator>=(const vector<T,Alloc>& l, const vector<T,Alloc>& r )	 { return !(l < r); }
 
 	// See ft::vector::swap().
 	template <class T, class Alloc>
