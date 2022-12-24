@@ -28,26 +28,26 @@ namespace ft {
 		/*************************************************************
 		 * Types
 		*************************************************************/
-		typedef Alloc										allocator_type;
-		typedef typename allocator_type::reference			reference;
-		typedef typename allocator_type::const_reference	const_reference;
-		typedef ft::random_access_iterator<T>				iterator;
-		typedef ft::random_access_iterator<const T>			const_iterator;
-		typedef std::size_t									size_type;
-		typedef std::ptrdiff_t								difference_type;
-		typedef T											value_type;
-		typedef typename allocator_type::pointer			pointer;
-		typedef typename allocator_type::const_pointer		const_pointer;
-		typedef ft::reverse_iterator<iterator>				reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>		const_reverse_iterator;
+		typedef Alloc											allocator_type;
+		typedef typename allocator_type::reference				reference;
+		typedef typename allocator_type::const_reference		const_reference;
+		typedef T												value_type;
+		typedef ft::random_access_iterator<value_type>			iterator;
+		typedef ft::random_access_const_iterator<value_type>	const_iterator;
+		typedef std::size_t										size_type;
+		typedef std::ptrdiff_t									difference_type;
+		typedef typename allocator_type::pointer				pointer;
+		typedef typename allocator_type::const_pointer			const_pointer;
+		typedef ft::reverse_iterator<iterator>					reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 
 		/*************************************************************
 		 * Construct/Copy/Destroy
 		*************************************************************/
 		// Empty container constructor (default constructor)
-		vector() { }
+	//	vector() { }
 		// Creates a vector with no elements
-		explicit vector(const allocator_type& alloc)
+		explicit vector(const allocator_type& alloc = allocator_type())
 			: _alloc(alloc), _capacity(0), _array(0), _size(0) {}
 
 		// Fill constructor
@@ -190,7 +190,7 @@ namespace ft {
     	// and copying of vector data.
 		void reserve(size_type n) {
 			if (n > max_size())
-				throw std::length_error("Reserve size exceeds allocation max size");
+				throw std::length_error("vector::reserve");
 			if (n > _capacity) {
 				value_type	*new_array = _alloc.allocate(n);
 				for (size_type i(0);  i < _size; ++i)

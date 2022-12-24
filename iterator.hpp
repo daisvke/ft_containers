@@ -52,17 +52,12 @@ namespace ft {
 	/*************************************************************
 	 * random_access_iterator
 	  
-	 * This iterator is adaptable to iterator and const iterator,
-	   which is an attempt to mimic the normal_iterator from the
-	   stl_iterator library that is implemented for the STL vector
-	   container.
-
 	 * The concept random_access_iterator refines bidirectional_iterator
 	   by adding support for constant time advancement with the
 	   +=, +, -=, and - operators, constant time computation of
 	   distance with -, and array notation with subscripting.
 	*************************************************************/
-	template <bool Cst, class T>
+	template <class T>
 	class	random_access_iterator {
 
 	public:
@@ -73,16 +68,16 @@ namespace ft {
 		typedef std::ptrdiff_t					difference_type;
 		typedef T								value_type;
 		typedef value_type*						pointer;
-		typedef const value_type*				const_pointer;
 		typedef value_type&						reference;
-		typedef const value_type&				const_reference;
 		typedef std::random_access_iterator_tag	iterator_category;
+
+		typedef random_access_iterator<T>		self;
 
 		/*************************************************************
 		 * Construct/Copy/Destroy
 		*************************************************************/
 		random_access_iterator() : _current() {}
-		random_access_iterator(pointer it) : _current(it) {}
+		explicit random_access_iterator(pointer it) : _current(it) {}
 		random_access_iterator(const random_access_iterator &it)
 			: _current(it.base()) {}
 		~random_access_iterator() {}
@@ -95,7 +90,7 @@ namespace ft {
 		/*************************************************************
 		 * Assigning operator
 		*************************************************************/
-		random_access_iterator& operator= (const random_access_iterator& x) { _current = x.base(); return  *this; }
+	//	random_access_iterator& operator= (const random_access_iterator& x) { _current = x.base(); return  *this; }
 
 		/*************************************************************
 		 * Accessing operators
@@ -107,15 +102,15 @@ namespace ft {
 		/*************************************************************
 		 * Incrementing operators
 		*************************************************************/
-		random_access_iterator& operator++(void) { ++_current; return *this; }
-		random_access_iterator  operator++(int) {
-			random_access_iterator	tmp(*this);
+		self& operator++(void) { ++_current; return *this; }
+		self  operator++(int) {
+			self	tmp(*this);
 			++(*this);
 			return tmp;
 		}
-		random_access_iterator& operator--(void) { --_current; return *this; }
-		random_access_iterator  operator--(int) {
-			random_access_iterator	tmp(*this);
+		self& operator--(void) { --_current; return *this; }
+		self  operator--(int) {
+			self	tmp(*this);
 			--(*this);
 			return tmp;
 		}
@@ -123,36 +118,137 @@ namespace ft {
 		/*************************************************************
 		 * Arithmetic operators
 		*************************************************************/
-		random_access_iterator operator+(difference_type n) const {
-			return random_access_iterator(_current + n);
+		self operator+(difference_type n) const {
+			return self(_current + n);
 		}
-		random_access_iterator operator-(difference_type n) const {
+		self operator-(difference_type n) const {
 			return *this + (-n);
 		}
-		difference_type operator+(const random_access_iterator &b) const {
+		difference_type operator+(const self &b) const {
 			return _current + b._current;
 		}
-		difference_type operator-(const random_access_iterator &b) const {
+		difference_type operator-(const self &b) const {
 			return _current - b._current;
 		}
-		random_access_iterator& operator+=(const difference_type &n) { _current += n; return *this; }
-		random_access_iterator& operator-=(const difference_type &n) { *this += -n; return *this; }
+		self& operator+=(const difference_type &n) { _current += n; return *this; }
+		self& operator-=(const difference_type &n) { *this += -n; return *this; }
 
 		/*************************************************************
 		 * Boolean operators
 		*************************************************************/
 		bool operator==(random_access_iterator const& r) const { return (_current == r._current); }
 		bool operator!=(random_access_iterator const& r) const { return (_current != r._current); }
-		bool operator>(random_access_iterator const& r) const { return (_current > r._current); }
-		bool operator<(random_access_iterator const& r) const { return (_current < r._current); }
-		bool operator>=(random_access_iterator const& r) const { return (_current >= r._current); }
-		bool operator<=(random_access_iterator const& r) const { return (_current <= r._current); }
+		// bool operator>(random_access_iterator const& r) const { return (_current > r._current); }
+		// bool operator<(random_access_iterator const& r) const { return (_current < r._current); }
+		// bool operator>=(random_access_iterator const& r) const { return (_current >= r._current); }
+		// bool operator<=(random_access_iterator const& r) const { return (_current <= r._current); }
 
 
 	private:
 
 		pointer	_current;
 	}; // random_access_iterator
+
+
+
+	/*************************************************************
+	 * random_access_const_iterator
+	*************************************************************/
+	template <class T>
+	class	random_access_const_iterator {
+
+	public:
+
+		/*************************************************************
+		 * Types
+		*************************************************************/
+		typedef std::ptrdiff_t					difference_type;
+		typedef T								value_type;
+		typedef const value_type*				pointer;
+		typedef const value_type&				reference;
+		typedef std::random_access_iterator_tag	iterator_category;
+
+		typedef random_access_iterator<T>		iterator;
+
+		typedef random_access_const_iterator<T>	self;
+
+
+		/*************************************************************
+		 * Construct/Copy/Destroy
+		*************************************************************/
+		random_access_const_iterator() : _current() {}
+		explicit random_access_const_iterator(pointer it) : _current(it) {}
+		random_access_const_iterator(const iterator &it) : _current(it.base()) {}
+		~random_access_const_iterator() {}
+
+		/*************************************************************
+		 * Getter
+		*************************************************************/
+		pointer	base(void) const { return _current; }
+
+		/*************************************************************
+		 * Assigning operator
+		*************************************************************/
+	// //	random_access_const_iterator& operator=
+	// 	(const random_access_const_iterator& x)
+	// 	{ _current = x.base(); return  *this; }
+
+		/*************************************************************
+		 * Accessing operators
+		*************************************************************/
+		reference	operator*(void) const { return *_current; }
+		pointer		operator->(void) const { return &(operator*()); }
+	//	reference	operator[](difference_type n) const { return _current[n]; }
+
+		/*************************************************************
+		 * Incrementing operators
+		*************************************************************/
+		self& operator++(void) { ++_current; return *this; }
+		self  operator++(int) {
+			self	tmp(*this);
+			++(*this);
+			return tmp;
+		}
+		self& operator--(void) { --_current; return *this; }
+		self  operator--(int) {
+			self	tmp(*this);
+			--(*this);
+			return tmp;
+		}
+
+		/*************************************************************
+		 * Arithmetic operators
+		*************************************************************/
+		self operator+(difference_type n) const {
+			return self(_current + n);
+		}
+		self operator-(difference_type n) const {
+			return *this + (-n);
+		}
+		difference_type operator+(const self &b) const {
+			return _current + b._current;
+		}
+		difference_type operator-(const self &b) const {
+			return _current - b._current;
+		}
+		self& operator+=(const difference_type &n) { _current += n; return *this; }
+		self& operator-=(const difference_type &n) { *this += -n; return *this; }
+
+		/*************************************************************
+		 * Boolean operators
+		*************************************************************/
+		bool operator==(self const& r) const { return (_current == r._current); }
+		bool operator!=(self const& r) const { return (_current != r._current); }
+		// bool operator>(self const& r) const { return (_current > r._current); }
+		// bool operator<(self const& r) const { return (_current < r._current); }
+		// bool operator>=(self const& r) const { return (_current >= r._current); }
+		// bool operator<=(self const& r) const { return (_current <= r._current); }
+
+
+	private:
+
+		pointer	_current;
+	}; // random_access_const_iterator
 
 
 	/*************************************************************
