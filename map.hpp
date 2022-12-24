@@ -300,7 +300,7 @@ namespace ft {
 	template <typename Key, typename T, typename key_compare, typename allocator_type>
 	bool operator==(const map<Key,T,key_compare,allocator_type>& x,
 		const map<Key,T,key_compare,allocator_type>& y)
-	{ return x._t == y._y; }
+	{ return x._t == y._t; }
 
 	template <typename Key, typename T, typename key_compare, typename allocator_type>
 	bool operator< (const map<Key,T,key_compare,allocator_type>& x,
@@ -310,7 +310,7 @@ namespace ft {
 	template <typename Key, typename T, typename key_compare, typename allocator_type>
 	bool operator!=(const map<Key,T,key_compare,allocator_type>& x,
 		const map<Key,T,key_compare,allocator_type>& y)
-	{ return !(x._t == y._y); }
+	{ return !(x._t == y._t); }
 
 	template <typename Key, typename T, typename key_compare, typename allocator_type>
 	bool operator> (const map<Key,T,key_compare,allocator_type>& x,

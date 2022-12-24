@@ -297,7 +297,16 @@ int main(int argc, char** argv) {
 	ft::map<int, int>	map_int5(map_int.begin(), map_int.end());
 	std::cout << map_int5[0] << std::endl;
 
+	print_testname("map_int5:	assign map_int");
+
 	map_int5 = map_int;
+	for (ft::map<int, int>::iterator it = map_int5.begin(); it != map_int5.end(); ++it)
+		std::cout << "key: " << (*it).first << " => val: " << (*it).second << std::endl;
+
+	print_testname("map_int5:	swap map_int");
+	map_int5.swap(map_int);
+	for (ft::map<int, int>::iterator it = map_int5.begin(); it != map_int5.end(); ++it)
+		std::cout << "key: " << (*it).first << " => val: " << (*it).second << std::endl;
 
 	//std::cout << "begin: " << map_int3.begin() << "	end: " << map_int3.end() << std::endl;
 

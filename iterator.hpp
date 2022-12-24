@@ -175,7 +175,7 @@ namespace ft {
 		// A reverse_iterator across other types can be copied if the
 		// underlying iterator can be converted to the type of current
 		template <class Iter>
-		reverse_iterator(const reverse_iterator<Iter>& it) : _current(it._current) {}
+		reverse_iterator(const reverse_iterator<Iter>& it) : _current(it.base()) {}
 		
 		~reverse_iterator() {}
 
@@ -218,7 +218,7 @@ namespace ft {
 		reverse_iterator operator-=(difference_type n) { _current += n; return *this; }
 
 
-	private:
+	protected:
 
 		iterator _current;
 

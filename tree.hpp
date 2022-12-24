@@ -910,11 +910,11 @@ namespace ft {
 			{
 				if (root() == 0)
 				{
-					if (__t._root() != 0)
-						_impl._move_data(__t._impl);
+					if (__t.root() != 0)
+						_impl.move_data(__t._impl);
 				}
-				else if (__t._root() == 0)
-					__t._impl._move_data(_impl);
+				else if (__t.root() == 0)
+					__t._impl.move_data(_impl);
 				else
 				{
 					std::swap(root(),__t.root());
@@ -922,14 +922,13 @@ namespace ft {
 					std::swap(rightmost(),__t.rightmost());
 
 					root()->_parent = _end();
-					__t._root()->_parent = __t._end();
+					__t.root()->_parent = __t._end();
 					std::swap(this->_impl._node_count, __t._impl._node_count);
 				}
 				// No need to swap header's color as it does not change.
 				std::swap(this->_impl._key_compare, __t._impl._key_compare);
 
-				alloc_traits::_on_swap(get_node_allocator(),
-						__t.get_node_allocator());
+				alloc_traits::allocate(get_node_allocator(), 1);
 			}
 
 			template<typename _Key, typename _Val, typename _KeyOfValue,
