@@ -130,18 +130,22 @@ namespace ft {
 		/*************************************************************
 		 * Arithmetic operators
 		*************************************************************/
-		self operator+(size_type n) const {
-			return self(_current + n);
-		}
-		self operator-(size_type n) const {
-			return *this + (-n);
-		}
-		difference_type operator+(const self &b) const {
-			return _current + b._current;
-		}
-		difference_type operator-(const self &b) const {
-			return _current - b._current;
-		}
+		self operator+(size_type n) const { return self(_current + n); }
+		
+		self operator-(size_type n) const { return *this + (-n); }
+		
+		template <bool B>
+		difference_type operator+(const random_access_iterator<B, T> &b) const
+		{ return _current + b._current; }
+
+		// When adding a number from the front of the iterator: n + it
+		// Returns the current position + n
+		friend self	operator+(size_type n, const self &x) { return x.base() + n; }
+
+		template <bool B>
+		difference_type operator-(const random_access_iterator<B, T> &b) const
+		{ return _current - b.base(); }
+
 		self& operator+=(const size_type &n) { _current += n; return *this; }
 		self& operator-=(const size_type &n) { *this += -n; return *this; }
 

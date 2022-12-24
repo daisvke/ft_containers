@@ -68,7 +68,7 @@ namespace ft {
 		template <class InputIterator>
 		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
 			: _alloc(alloc), _capacity(0), _array(0), _size(0) {
-			while (first != last) { push_back(*first++); }
+			insert(begin(), first, last);
 		}
 
 		// Copy constructor

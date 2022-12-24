@@ -350,9 +350,13 @@ int main(int argc, char** argv) {
 		std::cout << ' ' << myvector.at(i);
 	std::cout << std::endl;	
 
-//	To test the error from Mil Tester
-//	print_testname("vct:	nbr + iterator");
-// 	ft::vector<int>	it = 1 + vector_int.begin();
+	print_testname("vct:	nbr + iterator");
+ 	ft::vector<int>::iterator	it = 2 + myvector.begin();
+	std::cout << (*it) << std::endl;
+
+	print_testname("vct:	const_iterator - iterator");
+	ft::vector<int>::const_iterator	const_it = vector_int.begin();
+ 	std::cout << const_it - (vector_int.begin() + 3) << std::endl;
 
 
 
