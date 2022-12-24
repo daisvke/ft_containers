@@ -315,22 +315,22 @@ namespace ft {
 	template <typename Key, typename T, typename key_compare, typename allocator_type>
 	bool operator> (const map<Key,T,key_compare,allocator_type>& x,
 		const map<Key,T,key_compare,allocator_type>& y)
-	{ return !(y < x); }
+	{ return y < x; }
 
 	template <typename Key, typename T, typename key_compare, typename allocator_type>
 	bool operator>=(const map<Key,T,key_compare,allocator_type>& x,
 		const map<Key,T,key_compare,allocator_type>& y)
-	{ return !(y < x); }
+	{ return !(x < y); }
 
 	template <typename Key, typename T, typename key_compare, typename allocator_type>
 	bool operator<=(const map<Key,T,key_compare,allocator_type>& x,
 		const map<Key,T,key_compare,allocator_type>& y)
-	{ return !(x < y); }
+	{ return !(y < x); }
 
 	// specialized algorithms:
 	template <typename Key, typename T, typename key_compare, typename allocator_type>
 	void swap(map<Key,T,key_compare,allocator_type>& x,
-	map<Key,T,key_compare,allocator_type>& y)
+		map<Key,T,key_compare,allocator_type>& y)
 	{ x.swap(y); }
 
 } // namespace ft

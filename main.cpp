@@ -138,8 +138,8 @@ int main(int argc, char** argv) {
 	std::cout << "begin: " << begin->idx << ", end: " << end->idx << std::endl;
 
 	print_testname("vector_buffer: rbegin(), rend()");
-	ft::vector<Buffer>::reverse_iterator	rbegin = ++vector_buffer.rbegin();
-	ft::vector<Buffer>::reverse_iterator	rend = vector_buffer.rend();
+	ft::vector<Buffer>::reverse_iterator	rbegin = vector_buffer.rbegin();
+	ft::vector<Buffer>::reverse_iterator	rend = --vector_buffer.rend();
 	std::cout << "rbegin: " << rbegin->idx << ", rend: " << rend->idx << std::endl;
 
 	std::cout << std::endl;
@@ -287,10 +287,10 @@ int main(int argc, char** argv) {
 
 	print_testname("map_int2:	rbegin(), rend()");
 
-	std::cout << "[begin] key: " << (++map_int2.rbegin())->first
-		<< " val: " << (++map_int2.rbegin())->second <<
-		"	[end] key:" << map_int2.rend()->first <<
-		" val: " << map_int2.rend()->second << std::endl;
+	std::cout << "[rbegin] key: " << (map_int2.rbegin())->first
+		<< " val: " << (map_int2.rbegin())->second <<
+		"	[rend] key:" << (--map_int2.rend())->first <<
+		" val: " << (--map_int2.rend())->second << std::endl;
 
 	print_testname("map_int5:	insert map_int.begin(), map_int.end()");
 
