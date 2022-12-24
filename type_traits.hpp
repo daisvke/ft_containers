@@ -2,16 +2,21 @@
 # define _FT_TYPE_TRAITS_HPP
 
 /*************************************************************
- * A partial type_traits library implementation
+ * A partial type_traits library implementation that includes:
+	1. enable_if
+	2. integral_constant
+	3. is_integral
+	4. conditional
 *************************************************************/
 
 namespace ft {
 
 	/*************************************************************
 	 * enable_if
+	
+	 * Primary template
+	 * Define a member typedef `type` only if a boolean constant is true
 	*************************************************************/
-	// Primary template
-	// Define a member typedef `type` only if a boolean constant is true
 	template <bool B, typename T = void>
 	struct enable_if {};
 	 
@@ -67,6 +72,23 @@ namespace ft {
 	template <> struct is_integral<long>			: public ft::true_type {};
 	template <> struct is_integral<unsigned long>	: public ft::true_type {};
 	template <> struct is_integral<long long>		: public ft::true_type {};
+
+
+	/*************************************************************
+	 * conditional
+	 * 
+	 * Primary template.
+	 * Define a member typedef type to one of two argument types.
+	*************************************************************/
+	template<bool _Cond, typename _Iftrue, typename _Iffalse>
+	struct conditional
+	{ typedef _Iftrue type; };
+
+	// Partial specialization for false.
+	template<typename _Iftrue, typename _Iffalse>
+	struct conditional<false, _Iftrue, _Iffalse>
+	{ typedef _Iffalse type; };
+
 } // namespace ft
 
 #endif /* _FT_TYPE_TRAITS_HPP */

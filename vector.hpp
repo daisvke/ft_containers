@@ -45,15 +45,16 @@ namespace ft {
 		 * Construct/Copy/Destroy
 		*************************************************************/
 		// Empty container constructor (default constructor)
+		vector() { }
 		// Creates a vector with no elements
-		explicit vector(const allocator_type& alloc = allocator_type())
+		explicit vector(const allocator_type& alloc)
 			: _alloc(alloc), _capacity(0), _array(0), _size(0) {}
 
 		// Fill constructor
 		// This constructor fills the vector with n copies of value.
 		explicit vector(size_type n, const value_type& val = value_type(),
 			const allocator_type& alloc = allocator_type())
-			:  _alloc(alloc), _capacity(0), _array(0), _size(0) {
+			:  _alloc(alloc), _capacity(0), _array(0), _size(n) {
 			_capacity = n;
 			_array = _alloc.allocate(n);
 			
@@ -217,11 +218,11 @@ namespace ft {
 		// is first checked that it is in the range of the vector.  The
     	// function throws out_of_range if the check fails.
 		const_reference at(size_type n) const {
-			if (n < _size) return _array[n];
+			if (n < _size) return (*this)[n];
 			throw std::out_of_range("Unvalid index is out of range");
 		}
 		reference at(size_type n) {
-			if (n < _size) return _array[n];
+			if (n < _size) return (*this)[n];
 			throw std::out_of_range("Unvalid index is out of range");
 		}
 

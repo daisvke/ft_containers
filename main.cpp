@@ -308,6 +308,50 @@ int main(int argc, char** argv) {
 	for (ft::map<int, int>::iterator it = map_int5.begin(); it != map_int5.end(); ++it)
 		std::cout << "key: " << (*it).first << " => val: " << (*it).second << std::endl;
 
+	print_testname("vct:	assign operator");
+
+	ft::vector<int>	vct;
+	vct.push_back(1);
+	vct.push_back(2);
+	vct.push_back(3);
+	vct.pop_back();
+	vct.pop_back();
+	vct.pop_back();
+	for (unsigned long int i = 0; i < vct.size(); ++i)
+		vct[i] = (vct.size() - i) * 3;
+
+	for (size_t i = 0; i < vct.size(); ++i)
+		std::cout << vct[i] << std::endl;
+		
+	print_testname("vct:	assign 53 x 5");
+
+	vct.assign(7, 53);
+
+	for (size_t i = 0; i < vct.size(); ++i)
+		std::cout << vct[i] << std::endl;
+
+	print_testname("vct:	assign vector_int.begin(), vector_int.end()");
+
+	vct.assign(vector_int.begin(), vector_int.begin() + 3);
+
+	for (size_t i = 0; i < vct.size(); ++i)
+		std::cout << vct[i] << std::endl;
+
+	print_testname("vct:	at()");
+
+  ft::vector<int> myvector (10);   // 10 zero-initialized ints
+
+  // assign some values:
+  for (unsigned i=0; i<myvector.size(); i++)
+    myvector.at(i)=i;
+
+  std::cout << "myvector contains:";
+  for (unsigned i=0; i<myvector.size(); i++)
+    std::cout << ' ' << myvector.at(i);
+  std::cout << '\n';
+
+
+
 	//std::cout << "begin: " << map_int3.begin() << "	end: " << map_int3.end() << std::endl;
 
 	/*
