@@ -339,16 +339,20 @@ int main(int argc, char** argv) {
 
 	print_testname("vct:	at()");
 
-  ft::vector<int> myvector (10);   // 10 zero-initialized ints
+	ft::vector<int> myvector (10);   // 10 zero-initialized ints
 
-  // assign some values:
-  for (unsigned i=0; i<myvector.size(); i++)
-    myvector.at(i)=i;
+	// assign some values:
+	for (unsigned i=0; i<myvector.size(); i++)
+		myvector.at(i)=i;
 
-  std::cout << "myvector contains:";
-  for (unsigned i=0; i<myvector.size(); i++)
-    std::cout << ' ' << myvector.at(i);
-  std::cout << '\n';
+	std::cout << "myvector contains:";
+	for (unsigned i=0; i<myvector.size(); i++)
+		std::cout << ' ' << myvector.at(i);
+	std::cout << std::endl;	
+
+//	To test the error from Mil Tester
+//	print_testname("vct:	nbr + iterator");
+// 	ft::vector<int>	it = 1 + vector_int.begin();
 
 
 
