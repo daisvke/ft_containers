@@ -124,12 +124,10 @@ int main(int argc, char** argv) {
 	std::cout << std::endl;
 
 	print_testname("vector_buffer: assign value with =op x COUNT");
-	for (size_t i = 0; i < COUNT; i++)
+	for (size_t i = 0; i < 10 && i < COUNT; i++)
 	{
-		std::stringstream	res;
-		res << "buffer " << i;
-		const char *str = res.str().c_str();
-		strcpy(vector_buffer[i].buff, str);
+		vector_buffer[i].buff[0] = 'B';
+		vector_buffer[i].buff[1] = i + 48;
 	}
 	for (size_t i = 0; i < vector_buffer.size(); ++i)
 		std::cout << vector_buffer[i].buff << std::endl;
@@ -280,19 +278,26 @@ int main(int argc, char** argv) {
 	// for (ft::map<int, int>::iterator it = map_int3.begin(); it != map_int3.end(); ++it)
 	// 	std::cout << "key: " << (*it).first << " => val: " << (*it).second << std::endl;
 
-	print_testname("map_int2: begin(), end()");
+	print_testname("map_int2:	begin(), end()");
 	
 	std::cout << "[begin] key: " << (*map_int2.begin()).first
 		<< " val: " << (*map_int2.begin()).second <<
 		"	[end] key:" << (*--map_int2.end()).first <<
 		" val: " << (*--map_int2.end()).second << std::endl;
 
-	print_testname("map_int2: rbegin(), rend()");
+	print_testname("map_int2:	rbegin(), rend()");
 
-	std::cout << "[begin] key: " << (*++map_int2.rbegin()).first
-		<< " val: " << (*++map_int2.rbegin()).second <<
-		"	[end] key:" << (*map_int2.rend()).first <<
-		" val: " << (*map_int2.rend()).second << std::endl;
+	std::cout << "[begin] key: " << (++map_int2.rbegin())->first
+		<< " val: " << (++map_int2.rbegin())->second <<
+		"	[end] key:" << map_int2.rend()->first <<
+		" val: " << map_int2.rend()->second << std::endl;
+
+	print_testname("map_int5:	insert map_int.begin(), map_int.end()");
+
+	ft::map<int, int>	map_int5(map_int.begin(), map_int.end());
+	std::cout << map_int5[0] << std::endl;
+
+	map_int5 = map_int;
 
 	//std::cout << "begin: " << map_int3.begin() << "	end: " << map_int3.end() << std::endl;
 

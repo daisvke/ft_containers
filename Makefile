@@ -5,9 +5,10 @@ NAME			=	ft_containers
 
 # C X X  F L A G S #
 
-CXX				=	c++
-CXXFLAGS		=	-Wall -Wextra -std=c++98 #-Werror
+CXX				=	clang++ # c++ on subject but clang++ shows more errors
+CXXFLAGS		=	-Wall -Wextra -std=c++98 # -Werror
 DEBUG			=	-g3
+DCXX			=	clang++
 
 
 # S O U R C E  F I L E S #

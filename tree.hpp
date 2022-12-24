@@ -72,8 +72,8 @@ namespace ft {
 	*************************************************************/
 	template<typename Val>
 	struct rb_tree_node : public rb_tree_node_base {
-		typedef rb_tree_node<Val>* link_type;
-		Val	Value_field;
+		typedef rb_tree_node<Val>*	link_type;
+		Val							Value_field;
 
 		Val			*valptr() { return &Value_field; }
 		const Val	*valptr() const { return &Value_field; }
@@ -109,7 +109,7 @@ namespace ft {
 		 * Accessing operators
 		*************************************************************/
 		reference	operator*(void) const { return *static_cast<link_type>(_node)->valptr(); }
-		reference	operator->(void) const { return static_cast<link_type>(_node)->valptr(); }
+		pointer		operator->(void) const { return static_cast<link_type>(_node)->valptr(); }
 
 		/*************************************************************
 		 * Incrementing operators
@@ -162,14 +162,14 @@ namespace ft {
 
 		typedef rb_tree_const_iterator<T>			self;
 		typedef rb_tree_node_base::const_base_ptr	base_ptr;
-		typedef rb_tree_node<T>						*link_type;
+		typedef const rb_tree_node<T>				*link_type;
 		
 		/*************************************************************
 		 * Construct/Copy/Destroy
 		*************************************************************/
 		rb_tree_const_iterator() : _node() {}
 		explicit rb_tree_const_iterator(base_ptr x) : _node(x) {}
-		explicit rb_tree_const_iterator(const iterator& it) : _node(it._node) {}
+		rb_tree_const_iterator(const iterator& it) : _node(it._node) {}
 
 		iterator	_const_cast() const
 		{ return iterator(const_cast<typename iterator::base_ptr>(_node)); }
@@ -178,7 +178,7 @@ namespace ft {
 		 * Accessing operators
 		*************************************************************/
 		reference	operator*(void) const { return *static_cast<link_type>(_node)->valptr(); }
-		reference	operator->(void) const { return static_cast<link_type>(_node)->valptr(); }
+		pointer		operator->(void) const { return static_cast<link_type>(_node)->valptr(); }
 
 		/*************************************************************
 		 * Incrementing operators
@@ -233,6 +233,78 @@ namespace ft {
 
 
 		private:
+
+			// Functor recycling a pool of nodes and using allocation once the pool
+			// is empty.
+			struct reuse_or_alloc_node
+			{
+				reuse_or_alloc_node(rb_tree& __t)
+				: _root(__t.root()), _nodes(__t.rightmost()), _t(__t)
+				{
+					if (_root)
+					{
+						_root->_parent = 0;
+
+						if (_nodes->_left)
+						_nodes = _nodes->_left;
+					}
+					else
+						_nodes = 0;
+				}
+
+				~reuse_or_alloc_node()
+				{ _t.erase(static_cast<link_type>(_root)); }
+
+				template<typename _Arg>
+				link_type	operator()(const _Arg& __arg)
+				{
+					link_type __node = static_cast<link_type>(extract());
+					if (__node)
+					{
+						_t.destroy_node(__node);
+						_t.construct_node(__node, __arg);
+						return __node;
+					}
+
+					return _t.create_node(__arg);
+				}
+
+
+				private:
+
+					base_ptr	extract() {
+						if (!_nodes)
+							return _nodes;
+
+						base_ptr __node = _nodes;
+						_nodes = _nodes->_parent;
+						if (_nodes)
+						{
+							if (_nodes->_right == __node)
+							{
+								_nodes->_right = 0;
+								if (_nodes->_left)
+								{
+									_nodes = _nodes->_left;
+									while (_nodes->_right)
+										_nodes = _nodes->_right;
+									if (_nodes->_left)
+										_nodes = _nodes->_left;
+								}
+							}
+							else // __node is on the left.
+								_nodes->_left = 0;
+						}
+						else
+							_root = 0;
+						return __node;
+					}
+
+					base_ptr	_root;
+					base_ptr	_nodes;
+					rb_tree&	_t;
+			};
+
 
 			struct alloc_node
 			{
@@ -403,7 +475,7 @@ namespace ft {
 			iterator	insert_lower(base_ptr y, const value_type& v);
 			iterator	insert_equal_lower(const value_type& x);
 
-			enum { as_lvalue, as_rvalue };
+			enum { __as_lvalue, __as_rvalue };
 
 
 			template<bool MoveValues, typename NodeGen>
@@ -422,7 +494,7 @@ namespace ft {
 			link_type	copy(const rb_tree& x)
 			{
 				alloc_node	an(*this);
-				return copy<as_lvalue>(x, an);
+				return copy<__as_lvalue>(x, an);
 			}
 
 			void	erase(link_type x);
@@ -456,7 +528,7 @@ namespace ft {
 			iterator				begin()
 			{ return iterator(_impl._header._left); }
 			const_iterator			begin() const
-			{ return const_iterator(this->_impl._header._left); }
+			{ return const_iterator(_impl._header._left); }
 
 			iterator				end() { return iterator(&_impl._header); }
 			const_iterator			end() const
@@ -585,7 +657,7 @@ namespace ft {
 			swap(rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>& __x,
 				rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>& __y)
 			{ __x.swap(__y); }
-/*
+
 			template<typename _Key, typename _Val, typename _KeyOfValue,
 			typename _Compare, typename _Alloc>
 			rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>&
@@ -594,16 +666,15 @@ namespace ft {
 			{
 				if (this != &__x)
 				{
-					_Reuse_or_alloc_node __roan(*this);
-					_impl._reset();
+					reuse_or_alloc_node __roan(*this);
+					_impl.reset();
 					_impl._key_compare = __x._impl._key_compare;
-					if (__x._root() != 0)
-						_root() = _copy<__as_lvalue>(__x, __roan);
+					if (__x.root() != 0)
+						root() = copy<__as_lvalue>(__x, __roan);
 				}
 
 				return *this;
 			}
-*/
 
   			template<typename _Key, typename _Val, typename _KeyOfValue,
 			typename _Compare, typename _Alloc>
@@ -1247,7 +1318,7 @@ namespace ft {
 			rb_tree<_Key, _Val, _KeyOfValue, _Compare, _Alloc>::
 			find(const _Key& __k)
 			{
-				iterator __j = _lower_bound(_begin(), _end(), __k);
+				iterator __j = lower_bound(_begin(), _end(), __k);
 				return (__j == end() || _impl._key_compare(__k, key(__j._node))) ?
 					end() : __j;
 			}

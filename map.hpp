@@ -4,6 +4,10 @@
 # include <functional>
 # include <memory>
 
+# include "algorithm.hpp"
+# include "type_traits.hpp"
+# include "iterator.hpp"
+# include "utility.hpp"
 # include "tree.hpp"
 
 namespace ft {
@@ -77,6 +81,8 @@ namespace ft {
 		explicit map(const key_compare& comp,
 			const allocator_type& alloc = allocator_type())
 			: _t(comp), pair_alloc_type(alloc) {}
+
+		map(const map& x) : _t(x._t) {};
 		
 		// Builds a map from a range
 		// Create a map consisting of copies of the elements from
@@ -92,8 +98,9 @@ namespace ft {
 			: _t(comp, pair_alloc_type(alloc))
 		{ _t.insert_range_unique(first, last); }
 
-		map(const map& x) : _t(x._t) {};
-
+		/*************************************************************
+		 *  Assignment operator
+		*************************************************************/
 		map&	operator=(const map& x)
 		{ _t = x._t; return *this; }
 
@@ -269,12 +276,18 @@ namespace ft {
 		pair<const_iterator,const_iterator>	equal_range(const key_type& x) const
 		{ return _t.equal_range(x); }
 
-
 		/*************************************************************
-		 * The past-the-end element is the theoretical element that would
-		 	follow the last element in the map container. It does not 
-			point to any element, and thus shall not be dereferenced.
+		 *  Relational operators
 		*************************************************************/
+
+		template<typename _K1, typename _T1, typename _C1, typename _A1>
+		friend bool	operator==(const map<_K1, _T1, _C1, _A1>&,
+			const map<_K1, _T1, _C1, _A1>&);
+
+		template<typename _K1, typename _T1, typename _C1, typename _A1>
+		friend bool	operator<(const map<_K1, _T1, _C1, _A1>&,
+			const map<_K1, _T1, _C1, _A1>&);
+		  		  
 	}; // Map
 
 

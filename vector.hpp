@@ -227,7 +227,7 @@ namespace ft {
 
 		//  Return a reference to the data at the first element of the vector
 		reference front(void) { return *begin(); }
-		const_reference front() const { return *begin; }
+		const_reference front() const { return *begin(); }
 		//  Return a reference to the data at the last element of the vector
 		reference back(void) { return *(end() - 1); }
 		const_reference back(void) const { return *(end() - 1); }

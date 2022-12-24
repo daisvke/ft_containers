@@ -5,3 +5,5 @@ https://www.lirmm.fr/~ducour/Doc-objets/ISO+IEC+14882-1998.pdf#%5B%7B%22num%22%3
 https://h-deb.clg.qc.ca/Sujets/Divers--cplusplus/Traits.html<br />
 https://www.programiz.com/dsa/red-black-tree<br />
 https://github.com/gcc-mirror/gcc/blob/41d6b10e96a1de98e90a7c0378437c3255814b16/libstdc%2B%2B-v3/src/c%2B%2B98/tree.cc#L95
+
+			std::cout << "\033[32m ====================> HERRRE\033[0m" <<std::endl; 
