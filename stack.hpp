@@ -59,7 +59,7 @@ namespace ft {
 			void	pop() { c.pop_back(); }
 			
 			/*************************************************************
-			 * Boolean operators for stack
+			 * Boolean operators
 			*************************************************************/
 			friend bool operator==(const stack& x, const stack& y)
 			{ return x.c == y.c; }
