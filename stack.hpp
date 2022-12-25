@@ -58,20 +58,22 @@ namespace ft {
 			
 			void	pop() { c.pop_back(); }
 			
+			/*************************************************************
+			 * Boolean operators for stack
+			*************************************************************/
+			friend bool operator==(const stack& x, const stack& y)
+			{ return x.c == y.c; }
+			
+			friend bool operator< (const stack& x, const stack& y)
+			{ return x.c < y.c; }
+	
+
 	}; // stack
 			
 
 	/*************************************************************
-	 * Boolean operators for reverse iterators
+	 * Boolean operators for stack
 	*************************************************************/
-	template <class T, class Container>
-	bool operator==(const stack<T, Container>& x, const stack<T, Container>& y)
-	{ return x.c == y.c; }
-	
-	template <class T, class Container>
-	bool operator< (const stack<T, Container>& x, const stack<T, Container>& y)
-	{ return x.c < y.c; }
-	
 	template <class T, class Container>
 	bool operator!=(const stack<T, Container>& x, const stack<T, Container>& y)
 	{ return !(x == y); }
