@@ -27,8 +27,6 @@ namespace ft {
 		typedef Compare value_compare;
 		typedef Alloc	allocator_type;
 
-
-	private:
 		typedef typename __gnu_cxx::__alloc_traits<Alloc>::template
 		rebind<Key>::other _Key_alloc_type;
 
@@ -38,9 +36,6 @@ namespace ft {
 		rep_type _t;  // Red-black tree representing set.
 
 		typedef __gnu_cxx::__alloc_traits<_Key_alloc_type> alloc_traits;
-
-
-	public:
 
 		typedef typename alloc_traits::pointer				pointer;
 		typedef typename alloc_traits::const_pointer		const_pointer;
@@ -144,7 +139,7 @@ namespace ft {
 		}
 
 		iterator	insert(const_iterator __position, const value_type& __x)
-		{ return _t.insert_unique_(__position, __x); }
+		{ return _t.insert_unique(__position, __x); }
 
 		// A template function that attempts to insert a range of elements.
 		template<typename _InputIterator>
