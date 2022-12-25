@@ -16,6 +16,7 @@
 	#include "stack.hpp"
 	#include "vector.hpp"
 	#include "map.hpp"
+	#include "set.hpp"
 #endif
 
 #include <stdlib.h>

@@ -34,7 +34,8 @@ INCS			=	algorithm.hpp \
 					map.hpp \
 					tree.hpp \
 					tree_libstdc.hpp \
-					stack.hpp
+					stack.hpp \
+					set.hpp
 
 
 #  B U I L D  R U L E S #
