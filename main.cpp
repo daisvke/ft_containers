@@ -13,7 +13,7 @@
 	namespace ft = std;
 #else
 	#define _NAMESPACE	"FT"
-//	#include "stack.hpp"
+	#include "stack.hpp"
 	#include "vector.hpp"
 	#include "map.hpp"
 #endif
@@ -32,7 +32,7 @@ struct Buffer
 //#define COUNT (MAX_RAM / (size_t)sizeof(Buffer))
 #define COUNT 5
 
-/*
+
 
 template<typename T>
 class MutantStack : public ft::stack<T>
@@ -52,7 +52,7 @@ public:
 	iterator begin() { return this->c.begin(); }
 	iterator end() { return this->c.end(); }
 };
-*/
+
 
 void print_testname(const char *name) {
 	static int	i;
@@ -81,12 +81,13 @@ int main(int argc, char** argv) {
 
 	ft::vector<std::string> vector_str;
 	ft::vector<int> vector_int;
-//	ft::stack<size_t> stack_size_t;
+	ft::stack<size_t> stack_size_t;
 	ft::vector<Buffer> vector_buffer;
-//	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
+	ft::stack<Buffer, std::deque<Buffer> > stack_deq_buffer;
 	ft::map<int, int> map_int;
 	
-//	std::cout << "count: " << COUNT << std::endl;
+	std::cout << "count: " << COUNT << std::endl;
+
 	print_testname("vector_buffer: push_back(Buffer()) x COUNT");
 	for (size_t i = 0; i < COUNT; i++)
 		vector_buffer.push_back(Buffer());
@@ -262,22 +263,6 @@ int main(int argc, char** argv) {
 	for (ft::map<int, int>::iterator it = copy.begin(); it != copy.end(); ++it)
 		std::cout << "key: " << (*it).first << " => val: " << (*it).second << std::endl;
 
-	// print_testname( "map_int2:	insert map_int from pos=1 to pos=3");
-	// ft::map<int, int>::iterator	it = map_int.begin(), first, last;
-	// size_t i = 0;
-
-	// for (; it != map_int.end(); ++it)
-	// {
-	// 	if (i == 1) first = it;
-	// 	if (i == 3) last = it;
-	// }
-	
-	// ft::map<int, int>	map_int3;
-	// map_int3.insert(first, last);
-
-	// for (ft::map<int, int>::iterator it = map_int3.begin(); it != map_int3.end(); ++it)
-	// 	std::cout << "key: " << (*it).first << " => val: " << (*it).second << std::endl;
-
 	print_testname("map_int2:	begin(), end()");
 	
 	std::cout << "[begin] key: " << (*map_int2.begin()).first
@@ -384,12 +369,11 @@ int main(int argc, char** argv) {
 
 	std::cout << "(it == const_it): " << (ite == it) << std::endl;
 	std::cout << "(const_ite - it): " << (ite - it) << std::endl;
-	std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+	std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl << std::endl;
 
 
 	//std::cout << "begin: " << map_int3.begin() << "	end: " << map_int3.end() << std::endl;
 
-	/*
 	MutantStack<char> iterable_stack;
 	for (char letter = 'a'; letter <= 'z'; letter++)
 		iterable_stack.push(letter);
@@ -397,7 +381,6 @@ int main(int argc, char** argv) {
 	{
 		std::cout << *it;
 	}
-	*/
 
 	std::cout << std::endl;
 

@@ -12,7 +12,9 @@
 namespace ft {
 
 	/*************************************************************
-	 * A standard container which offers fixed time access to
+	 * vector
+	 
+	 * This is a standard container which offers fixed time access to
 		individual elements in any order.
 
 	 * In some terminology a %vector can be described as a dynamic
@@ -363,7 +365,8 @@ namespace ft {
 		value_type		*_array;
 		size_type		_size;
 
-		// When using assign() or insert(), vectors from STL can allocate more than needed
+		// When using assign() or insert(), vectors from STL
+		//	can allocate more than needed
 		size_type		new_cap(size_type n)
 		{
 			size_type	i;
