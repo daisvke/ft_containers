@@ -182,21 +182,6 @@ namespace ft {
 		value_type*	_current;
 	}; // random_access_iterator
 
-// 	template <bool Is_const1, bool Is_const2, class T>
-// 	typename random_access_iterator<Is_const1, T>::difference_type
-// 	operator-(const random_access_iterator<Is_const1, T>& l, const random_access_iterator<Is_const2, T>& r)
-	// { return l.base() - r.base(); }
-
-	template <bool B, class T>
-	typename 
-	
-	random_access_iterator<B, T>::difference_type
-	operator-(typename random_access_iterator<B, T>::difference_type n,
-		const random_access_iterator<B, T>& x)
-	{ 
-		std::cout << "=================================>" << std::endl;
-		return random_access_iterator<B, T>(x.base() + n); }
-
 
 	/*************************************************************
 	 * reverse_iterator
@@ -279,7 +264,6 @@ namespace ft {
 
 		reverse_iterator operator-(difference_type n) const
 		{ return reverse_iterator(_current + n); }
-		//  std::ptrdiff_t operator-(const reverse_iterator &x) const { return x.base() - _current; }
 
 		// Increment the underlying iterator
 		reverse_iterator& operator--(void) { ++_current; return *this; }
@@ -288,13 +272,7 @@ namespace ft {
 		{ reverse_iterator tmp = *this; ++_current; return tmp; }
 
 		reverse_iterator operator-=(difference_type n) { _current += n; return *this; }
-
-
-
-		// When adding a number from the front of the iterator: n + it
-		// Returns the current position + n
-		// friend reverse_iterator operator+(int n, const reverse_iterator &x) { return x.base() - n + 1; }
-
+		
 
 	protected:
 
