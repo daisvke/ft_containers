@@ -211,8 +211,8 @@ namespace ft {
     	// Note that data access with this operator is unchecked and
     	// out_of_range lookups are not defined. (For checked lookups
     	// see at().)
-		reference operator[](size_type n) { return _array[n]; }
-		const_reference operator[](size_type n) const { return _array[n]; }
+		reference operator[](size_type n) { return *(_array + n); }
+		const_reference operator[](size_type n) const { return *(_array + n); }
 
 		// This function provides for safer data access.  The parameter
 		// is first checked that it is in the range of the vector.  The
@@ -257,43 +257,43 @@ namespace ft {
     	// the specified location.  Note that this kind of operation
     	// could be expensive for a vector and if it is frequently
     	// used the user should consider using std::list.
-		void insert(iterator position, size_type n, const value_type& x) {
+		void insert(iterator position, size_type n, const value_type& x)
+		{
 			difference_type	pos = position - begin();
 
 			if (_size + n > _capacity)
 				reserve(new_cap(_size + n));
- 			for (size_type i(_size - 1 + n); i >= pos + n; --i)
-			{
-				_alloc.construct(_array + i, _array[i - 1]);
-				_alloc.destroy(&_array[i - 1]);
-			}
-			for (size_type j(pos); j < pos + n; ++j)
-				_alloc.construct(_array + j, x);
-			_size += n;
+
+			for (size_type i(0); i < n; ++i)
+				_alloc.construct(_array + _size + i, x);
+			for (int i(_size - 1); i >= 0 && i >= pos; --i)
+				_array[i + n] = _array[i];
+			for (size_type i = pos ; i < pos + n ; ++i)
+				_array[i] = x;
+			_size = _size + n;
 		}
 
 		// This function will insert copies of the data in the range
     	// [__first,__last) into the vector before the location specified by position
 		template <class InputIterator>
 		void insert(iterator position, InputIterator first, InputIterator last,
-		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0) {
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
+		{
 			difference_type	pos = position - begin();
-			size_type	n = 0;
+			size_type		n = 0;
+
 			for (InputIterator it(first); it != last; ++it)
 				++n;
 
 			if (_size + n > _capacity)
 				reserve(new_cap(_size + n));
- 			for (size_type i(_size - 1 + n); i >= pos + n; --i)
-			{
-				_alloc.construct(_array + i, _array[i - 1]);
-				_alloc.destroy(&_array[i - 1]);
-			}
-			for (size_type j(pos); j < pos + n; ++j)
-			{
-				_alloc.construct(_array + j, *first);
-				++first;
-			}
+				
+			for (size_type i(0); i < n; ++i)
+				_alloc.construct(_array + _size + i, *first);
+			for (int i(_size - 1); i >= 0 && i >= pos; --i)
+				_array[i + n] = _array[i];
+			for (size_type i(pos); i < pos + n; ++i)
+				_array[i] = *first++;
 			_size += n;
 		}
 
