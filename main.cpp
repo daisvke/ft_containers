@@ -106,7 +106,6 @@ int main(int argc, char** argv) {
 		std::cout << vector_buffer[i].idx << std::endl;
 
 	// print_testname("vector_buffer: swap with empty vector<Buffer>");
-
 	// ft::vector<Buffer>().swap(vector_buffer);
 
 	// try
@@ -347,20 +346,20 @@ int main(int argc, char** argv) {
 	print_testname("vct:	const_reverse_iterator - reverse_iterator");
 
 
-#define TESTED_NAMESPACE ft
-#define TESTED_TYPE int
+	#define TESTED_NAMESPACE ft
+	#define TESTED_TYPE int
 	const int size = 5;
 	TESTED_NAMESPACE::vector<TESTED_TYPE> vct2(size);
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it = vct2.rbegin();
 	TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator ite = vct2.rbegin();
 
-	// for (int i = 0; i < size; ++i)
-		// it[i] = (size - i) * 5;
+	for (int i = 0; i < size; ++i)
+		it[i] = (size - i) * 5;
 
 	it = it + 5;
 	it = 1 + it;
 	it = it - 4;
-	 std::cout << *(it) << std::endl;
+	 std::cout << *(it += 2) << std::endl;
 	std::cout << *(it -= 1) << std::endl;
 
 	*(it -= 2) = 42;
@@ -382,6 +381,23 @@ int main(int argc, char** argv) {
 	{
 		std::cout << *it;
 	}
+
+	// int myints[]={12,75,10,32,20,25};
+	// ft::set<int> first (myints,myints+3);     // 10,12,75
+	// ft::set<int> second (myints+3,myints+6);  // 20,25,32
+
+	// first.swap(second);
+
+	// std::cout << "first contains:";
+	// for (ft::set<int>::iterator it4=first.begin(); it4!=first.end(); ++it4)
+	// std::cout << ' ' << *it4;
+	// std::cout << '\n';
+
+	// std::cout << "second contains:";
+	// for (ft::set<int>::iterator it4=second.begin(); it4!=second.end(); ++it4)
+	// std::cout << ' ' << *it4;
+	// std::cout << '\n';
+
 
 	std::cout << std::endl;
 

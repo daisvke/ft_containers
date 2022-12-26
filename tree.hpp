@@ -917,18 +917,16 @@ namespace ft {
 					__t._impl.move_data(_impl);
 				else
 				{
-					std::swap(root(),__t.root());
-					std::swap(leftmost(),__t.leftmost());
-					std::swap(rightmost(),__t.rightmost());
+					ft::swap(root(),__t.root());
+					ft::swap(leftmost(),__t.leftmost());
+					ft::swap(rightmost(),__t.rightmost());
 
 					root()->_parent = _end();
 					__t.root()->_parent = __t._end();
-					std::swap(this->_impl._node_count, __t._impl._node_count);
+					ft::swap(this->_impl._node_count, __t._impl._node_count);
 				}
 				// No need to swap header's color as it does not change.
-				std::swap(this->_impl._key_compare, __t._impl._key_compare);
-
-				alloc_traits::allocate(get_node_allocator(), 1);
+				ft::swap(this->_impl._key_compare, __t._impl._key_compare);
 			}
 
 			template<typename _Key, typename _Val, typename _KeyOfValue,
