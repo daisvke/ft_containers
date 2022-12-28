@@ -382,21 +382,21 @@ int main(int argc, char** argv) {
 		std::cout << *it;
 	}
 
-	// int myints[]={12,75,10,32,20,25};
-	// ft::set<int> first (myints,myints+3);     // 10,12,75
-	// ft::set<int> second (myints+3,myints+6);  // 20,25,32
+	int myints[]={12,75,10,32,20,25};
+	ft::set<int> first (myints,myints+3);     // 10,12,75
+	ft::set<int> second (myints+3,myints+6);  // 20,25,32
 
-	// first.swap(second);
+	first.swap(second);
 
-	// std::cout << "first contains:";
-	// for (ft::set<int>::iterator it4=first.begin(); it4!=first.end(); ++it4)
-	// std::cout << ' ' << *it4;
-	// std::cout << '\n';
+	std::cout << "first contains:";
+	for (ft::set<int>::iterator it4=first.begin(); it4!=first.end(); ++it4)
+	std::cout << ' ' << *it4;
+	std::cout << '\n';
 
-	// std::cout << "second contains:";
-	// for (ft::set<int>::iterator it4=second.begin(); it4!=second.end(); ++it4)
-	// std::cout << ' ' << *it4;
-	// std::cout << '\n';
+	std::cout << "second contains:";
+	for (ft::set<int>::iterator it4=second.begin(); it4!=second.end(); ++it4)
+	std::cout << ' ' << *it4;
+	std::cout << '\n';
 
 
 	std::cout << std::endl;

@@ -21,11 +21,11 @@ namespace ft {
 		/*************************************************************
 		 * Types
 		*************************************************************/
-		typedef Key														key_type;
-		typedef T														mapped_type;
-		typedef ft::pair<const key_type, mapped_type>					value_type;
-		typedef Compare													key_compare;
-		typedef Alloc													allocator_type;
+		typedef Key										key_type;
+		typedef T										mapped_type;
+		typedef ft::pair<const key_type, mapped_type>	value_type;
+		typedef Compare									key_compare;
+		typedef Alloc									allocator_type;
 
 		/*************************************************************
 		 * value_compare
@@ -36,7 +36,8 @@ namespace ft {
 
 			protected:
 				Compare comp;
-				value_compare (Compare c) : comp(c) {} // constructed with map's comparison object
+				 // constructed with map's comparison object
+				value_compare (Compare c) : comp(c) {}
 
 			public:
 				typedef bool		result_type;

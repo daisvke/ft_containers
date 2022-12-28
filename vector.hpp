@@ -9,6 +9,8 @@
 # include "iterator.hpp"
 # include "utility.hpp"
 
+enum e_new_cap_mode	{ _RESIZE, _PUSHBACK, _INSERT };
+
 namespace ft {
 
 	/*************************************************************
@@ -56,11 +58,9 @@ namespace ft {
 		// This constructor fills the vector with n copies of value.
 		explicit vector(size_type n, const value_type& val = value_type(),
 			const allocator_type& alloc = allocator_type())
-			:  _alloc(alloc), _capacity(0), _array(0), _size(n) {
-			_capacity = n;
-			_array = _alloc.allocate(n);
-			
-			for (size_type i = 0; i < n; ++i)
+			:  _alloc(alloc), _capacity(n), _array(_alloc.allocate(n)), _size(n)
+		{			
+			for (size_type i(0); i < n; ++i)
 				_alloc.construct(_array + i, val);
 		}
 
@@ -68,24 +68,35 @@ namespace ft {
 		// Create a vector consisting of copies of the elements from [first,last)
 		//	with logN memory reallocations.
 		template <class InputIterator>
-		vector(InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
-			: _alloc(alloc), _capacity(0), _array(0), _size(0) {
-			insert(begin(), first, last);
+		vector(InputIterator first, InputIterator last,
+			const allocator_type& alloc = allocator_type(),
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
+			: _alloc(alloc)
+		{
+			size_type		n = 0;
+
+			for (InputIterator it(first); it != last; ++it)
+				++n;
+			_size = n; _capacity = n; _array = _alloc.allocate(n);
+
+			for (size_type i(0); i < n; ++i)
+				_alloc.construct(_array + i, *first++);
 		}
 
 		// Copy constructor
-		// All the elements of x are copied, but any unused capacity in x will not be copied
-        // (i.e. capacity() == size() in the new %vector).
-		vector(const vector& x): _alloc(x._alloc), _capacity(x._capacity),
-			_array(_alloc.allocate(x._capacity)), _size(x._size) { assign(x.begin(), x.end()); }
+		// All the elements of x are copied, but any unused capacity in x
+		// will not be copied (i.e. capacity() == size() in the new %vector)
+		vector(const vector& x): _alloc(x._alloc), _capacity(x._size),
+			_array(_alloc.allocate(_capacity)), _size(x._size) {
+			for (size_type i(0); i < _size; ++i)
+				_alloc.construct(_array + i, x[i]);
+		}
 
 		// Destructor
-		// This only erases the elements. If the elements themselves are pointers, the pointed-to
-        // memory is not touched in any way. Managing the pointer is the user's responsibility.
-		~vector() {
-			clear();
-			_alloc.deallocate(_array, _capacity);
-		}
+		// This only erases the elements. If the elements themselves are
+		// pointers, the pointed-to memory is not touched in any way.
+		// Managing the pointer is the user's responsibility.
+		~vector() { clear(); _alloc.deallocate(_array, _capacity); }
 
 		/*************************************************************
 		 * Assigning operator
@@ -97,12 +108,14 @@ namespace ft {
 			return *this;
 		}
 
-		// This function fills a vector with copies of the elements in the range [__first,__last). 
-		// Note that the assignment completely changes the vector and that
-    	// the resulting vector's size is the same as the number of elements assigned.
+		// This function fills a vector with copies of the elements in the range 
+		// [__first,__last). Note that the assignment completely changes the
+		// vector and that the resulting vector's size is the same as the number
+		// of elements assigned.
 		template <class InputIterator>
 		void assign(InputIterator first, InputIterator last,
-			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0) {
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
+		{
 			// Get size needed by the range
 			size_type	n = 0;
 			for (InputIterator it(first); it != last; ++it)
@@ -170,8 +183,14 @@ namespace ft {
         // vector's current size the vector is truncated, otherwise
         // the vector is extended and new elements are populated with given data.
 		void resize(size_type sz, value_type c = value_type()) {
-			while (sz > _size) push_back(c);
+			if (sz > _size) {
+				if (sz > _capacity)
+					reserve(new_cap(sz, _RESIZE));
+				for (size_type i(_size); i < sz; ++i)
+					_alloc.construct(_array + i, c);
+			}
 			while (sz < _size) pop_back();
+			_size = sz;
 		}
 
 		// Returns the total number of elements that the vector can
@@ -194,7 +213,8 @@ namespace ft {
 			if (n > max_size())
 				throw std::length_error("vector::reserve");
 			if (n > _capacity) {
-				value_type	*new_array = _alloc.allocate(n);
+				pointer	new_array = _alloc.allocate(n);
+				
 				for (size_type i(0);  i < _size; ++i)
 				{
 					_alloc.construct(new_array + i, _array[i]);
@@ -238,10 +258,11 @@ namespace ft {
 		/*************************************************************
 		 * Modifiers
 		*************************************************************/
-		// Creates an element at the end of the vector and assigns the given data to it. 
+		// Creates an element at the end of the vector and assigns
+		//	the given data to it. 
 		void push_back(const value_type& x) {
-			if (_size == _capacity)
-				reserve(new_cap(_size + 1));
+			if (_size + 1 > _capacity)
+				reserve(new_cap(1, _PUSHBACK));
 			_alloc.construct(_array + _size, x);
 			++_size;
 		}
@@ -263,14 +284,15 @@ namespace ft {
 		{
 			difference_type	pos = position - begin();
 
+			if (n == 0) return ;
 			if (_size + n > _capacity)
-				reserve(new_cap(_size + n));
+				reserve(new_cap(n, _INSERT));
 
 			for (size_type i(0); i < n; ++i)
 				_alloc.construct(_array + _size + i, x);
 			for (int i(_size - 1); i >= 0 && i >= pos; --i)
 				_array[i + n] = _array[i];
-			for (size_type i = pos ; i < pos + n ; ++i)
+			for (size_type i(pos); i < pos + n; ++i)
 				_array[i] = x;
 			_size = _size + n;
 		}
@@ -288,7 +310,7 @@ namespace ft {
 				++n;
 
 			if (_size + n > _capacity)
-				reserve(new_cap(_size + n));
+					reserve(new_cap(n, _INSERT));
 				
 			for (size_type i(0); i < n; ++i)
 				_alloc.construct(_array + _size + i, *first);
@@ -361,19 +383,26 @@ namespace ft {
 	private:
 
 		allocator_type	_alloc;
+		
 		size_type		_capacity;
 		value_type		*_array;
 		size_type		_size;
 
 		// When using assign() or insert(), vectors from STL
 		//	can allocate more than needed
-		size_type		new_cap(size_type n)
+		size_type	new_cap(size_type n, e_new_cap_mode fct)
 		{
-			size_type	i;
+			size_type	cap;
 
-			i = 1;
-			while (i < n) { i *= 2;	}
-			return i;
+			if (fct == _INSERT && n + _size > _size * 2)
+				cap = _size + n;
+			else if (fct == _RESIZE && n > _size * 2)
+				cap = n;
+			else if (_size > 0)
+				cap = _size * 2;
+			else
+				cap = 1;
+			return cap;
 		}
 	}; // End of vector
 
