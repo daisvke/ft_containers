@@ -388,8 +388,13 @@ namespace ft {
 		value_type		*_array;
 		size_type		_size;
 
-		// When using assign() or insert(), vectors from STL
-		//	can allocate more than needed
+		// When using member functions as push_back(), resize() or insert(),
+		// vectors from STL can allocate more than needed when the function
+		// is called. This is to optimize the performance of the container
+		// by decreasing the number of calls to the allocator for the next
+		// needs.
+		// A conformant solution is to double the allocated memory
+		// every time size overgrows capacity.
 		size_type	new_cap(size_type n, e_new_cap_mode fct)
 		{
 			size_type	cap;
