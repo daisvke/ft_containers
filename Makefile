@@ -33,7 +33,6 @@ INCS			=	algorithm.hpp \
 					utility.hpp \
 					map.hpp \
 					tree.hpp \
-					tree_libstdc.hpp \
 					stack.hpp \
 					set.hpp
 

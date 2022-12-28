@@ -5,11 +5,12 @@
 #include <deque>
 
 
-#if 0 //CREATE A REAL STL EXAMPLE
+#if 1 //CREATE A REAL STL EXAMPLE
 	#define _NAMESPACE	"STL"
 	#include <map>
 	#include <stack>
 	#include <vector>
+	#include <set>
 	namespace ft = std;
 #else
 	#define _NAMESPACE	"FT"
@@ -30,7 +31,7 @@ struct Buffer
 };
 
 
-//#define COUNT (MAX_RAM / (size_t)sizeof(Buffer))
+// #define COUNT (MAX_RAM / (int)sizeof(Buffer))
 #define COUNT 5
 
 

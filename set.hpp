@@ -62,8 +62,8 @@ namespace ft {
 		
 		// Builds a set from a range
 		// Create a set consisting of copies of the elements from
-    	// [__first,__last).  This is linear in N if the range is
-    	// already sorted, and NlogN otherwise (where N is distance(__first,__last)).
+    	// [first,last).  This is linear in N if the range is
+    	// already sorted, and NlogN otherwise (where N is distance(first,last)).
 		template <typename InputIterator>
 		set(InputIterator first, InputIterator last) : _t()
 		{ _t.insert_range_unique(first, last); }
@@ -131,32 +131,32 @@ namespace ft {
     	// This function attempts to insert an element into the set. A set
     	// relies on unique keys and thus an element is only inserted if it is
     	// not already present in the set.
-		ft::pair<iterator, bool>	insert(const value_type& __x)
+		ft::pair<iterator, bool>	insert(const value_type& x)
 		{
-			ft::pair<typename rep_type::iterator, bool> __p =
-			_t.insert_unique(__x);
-			return ft::pair<iterator, bool>(__p.first, __p.second);
+			ft::pair<typename rep_type::iterator, bool> p =
+			_t.insert_unique(x);
+			return ft::pair<iterator, bool>(p.first, p.second);
 		}
 
-		iterator	insert(const_iterator __position, const value_type& __x)
-		{ return _t.insert_unique(__position, __x); }
+		iterator	insert(const_iterator position, const value_type& x)
+		{ return _t.insert_unique(position, x); }
 
 		// A template function that attempts to insert a range of elements.
 		template<typename _InputIterator>
-		void	insert(_InputIterator __first, _InputIterator __last)
-		{ _t.insert_range_unique(__first, __last); }
+		void	insert(_InputIterator first, _InputIterator last)
+		{ _t.insert_range_unique(first, last); }
 		
 		// Erases an element from a set
-		void	erase(iterator __position)
-		{ _t.erase(__position); }
+		void	erase(iterator position)
+		{ _t.erase(position); }
 
 		// Erases elements according to the provided key
-		size_type	erase(const key_type& __x)
-		{ return _t.erase(__x); }
+		size_type	erase(const key_type& x)
+		{ return _t.erase(x); }
 
 		// Erases a [first,last) range of elements from a set
-		void	erase(iterator __first, iterator __last)
-		{ _t.erase(__first, __last); }
+		void	erase(iterator first, iterator last)
+		{ _t.erase(first, last); }
 
 		// Erases all elements in a set
 		void		clear() { _t.clear(); }
