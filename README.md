@@ -2,13 +2,13 @@
 
 ## Description
 This project is about implementing a few container types of the C++ standard template library.<br />
-<br />
+
 These include:
 * vector
 * stack
 * map
-* set<br />
-<br/>
+* set
+
 and also:
 * std::iterator_traits
 * std::reverse_iterator
@@ -24,7 +24,8 @@ and also:
 ## Testers
 This repository include 2 additional testers that compare our containers to the STL ones:
 * [The mli Tester](https://github.com/mli42/containers_test)
-* [The hbaudet/mazoise Tester](https://github.com/Mazoise/FT_CONTAINERS_TESTER)<br />
+* [The hbaudet/mazoise Tester](https://github.com/Mazoise/FT_CONTAINERS_TESTER)
+
 We get a perfect score on both tests.
 
 ## Links
