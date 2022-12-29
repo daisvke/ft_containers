@@ -10,14 +10,14 @@ These include:
 * set
 <br/>
 and also:
-* std::iterator_traits
-* std::reverse_iterator
-* std::enable_if
-* std::is_integral
-* std::equal
-* std::lexicographical_compare
-* std::pair
-* std::make_pair
+* iterator_traits
+* reverse_iterator
+* enable_if
+* is_integral
+* equal
+* lexicographical_compare
+* pair
+* make_pair
 
 * A red-black tree is used in order to implement both map and set.
 
