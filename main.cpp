@@ -5,7 +5,7 @@
 #include <deque>
 
 
-#if 1 //CREATE A REAL STL EXAMPLE
+#if 0 //CREATE A REAL STL EXAMPLE
 	#define _NAMESPACE	"STL"
 	#include <map>
 	#include <stack>

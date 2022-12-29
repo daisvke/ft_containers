@@ -4,28 +4,21 @@ NAME			=	ft_containers
 
 
 # C X X  F L A G S #
-
-CXX				=	clang++ # c++ on subject but clang++ shows more errors
-CXXFLAGS		=	-Wall -Wextra -std=c++98 # -Werror
+# c++ compiler is mentioned on the subject, 
+# but clang++ shows more errors
+CXX				=	clang++
+CXXFLAGS		=	-Wall -Wextra -std=c++98 -Werror
 DEBUG			=	-g3
 DCXX			=	clang++
 
 
 # S O U R C E  F I L E S #
-
-SRCS			=	main.cpp
-
-
+SRC				=	main.cpp
 # O B J .  F I L E S #
-
-OBJS_DIR		=	objs/
-OBJS_FILES		=	$(SRCS:.cpp=.o)
-OBJS			=	$(addprefix $(OBJS_DIR), $(OBJS_FILES))
-
+OBJ				=	main.o
 
 # I N C .  F I L E S #
 
-INC_DIR			=	.
 INCS			=	algorithm.hpp \
 					vector.hpp \
 					type_traits.hpp \
@@ -43,21 +36,20 @@ INCS			=	algorithm.hpp \
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-		$(CXX) -o $@ $(OBJS)
+$(NAME): $(OBJ)
+		$(CXX) -o $@ $(OBJ)
 
-$(OBJS): $(SRCS) $(INCS)
-		mkdir -p $(OBJS_DIR)
-		$(CXX) $(CXXFLAGS) -I$(INC_DIR) -c $< -o $@
+$(OBJ): $(SRC) $(INCS)
+		$(CXX) $(CXXFLAGS) -c $< -o $@
 
 
 # C L E A N  &  O T H E R  R U L E S #
 
-debug: $(OBJS) $(INCS)
-		$(CXX) $(DEBUG) -o $@ $(OBJS)
+debug: $(OBJ) $(INCS)
+		$(CXX) $(DEBUG) -o $@ $(OBJ)
 
 clean:
-	rm -rf $(OBJS_DIR)
+	rm -rf $(OBJ)
 
 fclean: clean
 	rm -f $(NAME) debug
