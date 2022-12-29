@@ -7,24 +7,24 @@ These include:
 * vector
 * stack
 * map
-* set
+* set<br />
 <br/>
 and also:
-* iterator_traits
-* reverse_iterator
-* enable_if
-* is_integral
-* equal
-* lexicographical_compare
-* pair
-* make_pair
+* std::iterator_traits
+* std::reverse_iterator
+* std::enable_if
+* std::is_integral
+* std::equal
+* std::lexicographical_compare
+* std::pair
+* std::make_pair
 
 * A red-black tree is used in order to implement both map and set.
 
 ## Testers
 This repository include 2 additional testers that compare our containers to the STL ones:
 * [The mli Tester](https://github.com/mli42/containers_test)
-* [The hbaudet/mazoise Tester](https://github.com/Mazoise/FT_CONTAINERS_TESTER)
+* [The hbaudet/mazoise Tester](https://github.com/Mazoise/FT_CONTAINERS_TESTER)<br />
 We get a perfect score on both tests.
 
 ## Links
