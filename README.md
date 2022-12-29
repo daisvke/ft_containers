@@ -4,10 +4,10 @@
 This project is about implementing a few container types of the C++ standard template library.<br />
 
 These include:
-* vector
-* stack
-* map
-* set
+* std::vector
+* std::stack
+* std::map
+* std::set
 
 and also:
 * std::iterator_traits
