@@ -114,7 +114,7 @@ namespace ft
 		/*************************************************************
 		 * Assigning operator
 		 *************************************************************/
-		// All the elements of @a x are copied, but any unused capacity
+		// All the elements of x are copied, but any unused capacity
 		// in x will not be copied.
 		vector &operator=(const vector &x)
 		{
